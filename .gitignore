@@ -1,0 +1,65 @@
+# Visual Studio bullshittery
+.vs/
+[Bb]in/
+[Oo]bj/
+
+# Prerequisites
+*.d
+ 
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+*.bag
+*.h5
+*.vdi
+*.sav
+*.dmp
+ 
+# Linker output
+*.ilk
+*.map
+*.exp
+ 
+# Precompiled Headers
+*.gch
+*.pch
+ 
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+*.bin
+*.sys
+ 
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+ 
+# Executables
+*.exe
+*.app
+*.i*86
+*.x86_64
+*.hex
+*.apk
+ 
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+ 
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+Makefile.old
+dkms.conf
