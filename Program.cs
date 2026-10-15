@@ -1,10 +1,12 @@
-﻿namespace Wolf_Island
+﻿using WolfGame;
+
+namespace Wolf_Island
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Game game = new Game();
         }
     }
 }
