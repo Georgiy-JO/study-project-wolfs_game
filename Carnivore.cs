@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tamagochi
+namespace WolfGame
 {
     internal class Carnivore:Animal
     {
@@ -10,8 +10,8 @@ namespace Tamagochi
         {
             if (IsAlive && food.Kind == Food.FoodKind.fkMeaty)
             {
-                _fullness = Math.Min(_fullness + food.Value, MaxFullness);
-                Console.WriteLine($"I was fet ({food.Name}), I am:{Fullness}/{MaxFullness}");
+                _fullness = Math.Min(_fullness + food.FullnessValue, MaxFullness);
+                // Console.WriteLine($"I was fet ({food.Name}), I am:{Fullness}/{MaxFullness}");
             }
 
         }
