@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Tamagochi
+namespace WolfGame
 {
     internal class Food
     {
@@ -12,17 +12,17 @@ namespace Tamagochi
             fkGrassy,
             fkNone
         }
-        private (double x, double y) _coordinates;
+        private (uint x, uint y) _coordinates;
         //public string Name { get; }
-        public uint Value { get; }
+        public uint MeatValue { get; }
         public FoodKind Kind { get; }
-        public (double x, double y)  Coord => _coordinates;
+        public (uint x, uint y)  Coord => _coordinates;
 
 
-        public Food(uint value = 0, FoodKind kind = FoodKind.fkNone, (double x, double y) coord =default)
+        public Food(uint fValue = 0, FoodKind kind = FoodKind.fkNone, (uint x, uint y) coord =default)
         {
             //Name= name;
-            Value = value;
+            MeatValue = fValue;
             Kind = kind; 
             _coordinates = coord;
         }
@@ -33,7 +33,11 @@ namespace Tamagochi
 
     internal class Grass : Food             // check consts in constructor!!!!!!
     {
-        //public Grass(uint value = 2, FoodKind kind = FoodKind.fkGrassy, (double x, double y) coord = default) : base(value, kind, coord) { }
-        Grass():base(2, FoodKind.fkGrassy, (0.0, 0.0)) { }
+        public Grass():base(2, FoodKind.fkGrassy, (0, 0)) { }
+    }
+
+    internal class Remains : Food
+    {
+        public Remains(uint fValue = 0):base(fValue, FoodKind.fkMeaty,(0, 0) ){}
     }
 }

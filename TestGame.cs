@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Timers;
 
-namespace Tamagochi
+namespace WolfGame
 {
     using FoodC = Food.FoodKind;
     using Timer = System.Timers.Timer;
