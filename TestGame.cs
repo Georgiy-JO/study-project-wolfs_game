@@ -9,18 +9,18 @@ namespace WolfGame
     using Timer = System.Timers.Timer;
     internal class TestGame
     {
-        private static Food[] foodsToFeed=new Food[]{
-            new Food( "Cabage", 7, FoodC.fkGrassy),
-            new Food( "Eggplant", 4, FoodC.fkGrassy),
-            new Food( "Mouse", 2, FoodC.fkMeaty),
-            new Food( "Stake", 8, FoodC.fkMeaty),
-            new Food( "Fish", 5, FoodC.fkMeaty),
-            new Food( "CatMint", 1, FoodC.fkGrassy),
-        };
+        //private static Food[] foodsToFeed=new Food[]{
+        //    new Food( "Cabage", 7, FoodC.fkGrassy),
+        //    new Food( "Eggplant", 4, FoodC.fkGrassy),
+        //    new Food( "Mouse", 2, FoodC.fkMeaty),
+        //    new Food( "Stake", 8, FoodC.fkMeaty),
+        //    new Food( "Fish", 5, FoodC.fkMeaty),
+        //    new Food( "CatMint", 1, FoodC.fkGrassy),
+        //};
         //private TimeOnly timer;
         private static Random feeder;
         private Timer simulationTimer;
-        private Cat Musia;
+        //private Cat Musia;
 
 
         public TestGame()
@@ -36,7 +36,7 @@ namespace WolfGame
 
 
 
-            Musia =new Cat();
+            //Musia =new Cat();
         }
 
         ~TestGame()
@@ -47,11 +47,11 @@ namespace WolfGame
 
         private void OnSimulationTimerTick(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            Console.WriteLine($"Time: {simulationTimer.Interval/1000} ");
-            Console.WriteLine($"I'm {(Musia.Status((uint)(simulationTimer.Interval / 1000))?"Alive":"Dead")}");
-            Musia.Feed(foodsToFeed[feeder.Next(0,foodsToFeed.Length)]);
+            //Console.WriteLine($"Time: {simulationTimer.Interval/1000} ");
+            //Console.WriteLine($"I'm {(Musia.Status((uint)(simulationTimer.Interval / 1000))?"Alive":"Dead")}");
+            //Musia.Feed(foodsToFeed[feeder.Next(0,foodsToFeed.Length)]);
 
-            simulationTimer.Interval = feeder.Next(1, 10)*1000;
+            //simulationTimer.Interval = feeder.Next(1, 10)*1000;
         }
     }
 }

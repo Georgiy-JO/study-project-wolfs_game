@@ -33,11 +33,11 @@ namespace WolfGame
 
     internal class Grass : Food             // check consts in constructor!!!!!!
     {
-        Grass():base(2, FoodKind.fkGrassy, (0.0, 0.0)) { }
+        public Grass():base(2, FoodKind.fkGrassy, (0.0, 0.0)) { }
     }
 
     internal class Remains : Food
     {
-        Remains(uint fValue = 0):base(fValue, FoodKind.fkMeaty,(0.0, 0.0) ){}
+        public Remains(uint fValue = 0):base(fValue, FoodKind.fkMeaty,(0.0, 0.0) ){}
     }
 }
