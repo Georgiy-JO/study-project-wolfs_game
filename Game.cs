@@ -32,33 +32,31 @@ internal class Game
         }
     }
 
-    protected readonly static Random _rnd = new Random();
-    protected List<(uint x, uint y)> _positions;
-    protected Timer _time;
     protected Data _data;
 
     public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5,  uint countRabbit = 5, uint countGrass = 10, uint frames = 2000)
     {
-        InitializePositions(fieldWidth, fieldHeight);
+        List<(uint x, uint y)>  allPositions = CreatePositions(fieldWidth, fieldHeight);
 
         _data = new Data(fieldWidth, fieldHeight, new List<Wolf>(), new List<Rabbit>(), new List<Grass>());
 
-        Stack<(uint x, uint y)> positions = new(_positions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
+        Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
 
         _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
         _data.Grass.AddRange(CreateAllGrass(countRabbit, positions));
         _data.Rabbits.AddRange(CreateAllRabit(countGrass, positions));
 
         StartPlay(frames);
-        Console.ReadLine();
     }
 
-    public virtual void StartPlay(float frames)
+    public virtual void StartPlay(uint frames)
     {
-        _time = new Timer(frames);
-        _time.Elapsed += Update;
-        _time.AutoReset = true;
-        _time.Enabled = true;
+        while (true)
+        {
+            Update();
+
+            Thread.Sleep((int)frames);
+        }
     }
 
     public virtual void DrawGraphics()
@@ -105,13 +103,15 @@ internal class Game
         Console.WriteLine(new string('=', (int)_data.FieldWidth + 2));
     }
 
-    protected void InitializePositions(uint fieldWidth, uint fieldHeight)
+    protected List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
     {
-        _positions = new List<(uint x, uint y)>((int)(fieldWidth * fieldHeight));
+        var positions = new List<(uint x, uint y)>((int)(fieldWidth * fieldHeight));
 
         for (uint x = 0; x < fieldWidth; x++)
             for (uint y = 0; y < fieldHeight; y++)
-                _positions.Add((x, y));
+                positions.Add((x, y));
+
+        return positions;
     }
 
     protected List<Wolf> CreateAllWolfs(uint countWolfs, Stack<(uint x, uint y)> positions)
@@ -162,7 +162,7 @@ internal class Game
         return res;
     }
 
-    protected void Update(object? sender, System.Timers.ElapsedEventArgs e)
+    protected void Update()
     {
         foreach (var item in _data.Rabbits)
         {
