@@ -16,16 +16,16 @@ internal class Game
         private readonly List<Rabbit> _rabbits;
         private readonly List<Grass> _grass;
 
-        public uint FieldWidth => _fieldWidth;
-        public uint FieldHeight => _fieldHeight;
+        public uint Width => _fieldWidth;
+        public uint Height => _fieldHeight;
         public List<Wolf> Wolfs => _wolfs;
         public List<Rabbit> Rabbits => _rabbits;
         public List<Grass> Grass => _grass;
 
-        public Data(uint fieldWidth, uint fieldHeight, List<Wolf> wolfs, List<Rabbit> rabbits, List<Grass> grass)
+        public Data(uint width, uint height, List<Wolf> wolfs, List<Rabbit> rabbits, List<Grass> grass)
         {
-            _fieldWidth = fieldWidth;
-            _fieldHeight = fieldHeight;
+            _fieldWidth = width;
+            _fieldHeight = height;
             _wolfs = wolfs;
             _rabbits = rabbits;
             _grass = grass;
@@ -36,15 +36,9 @@ internal class Game
 
     public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5,  uint countRabbit = 5, uint countGrass = 10, uint frames = 2000)
     {
-        List<(uint x, uint y)>  allPositions = CreatePositions(fieldWidth, fieldHeight);
-
         _data = new Data(fieldWidth, fieldHeight, new List<Wolf>(), new List<Rabbit>(), new List<Grass>());
 
-        Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
-
-        _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
-        _data.Grass.AddRange(CreateAllGrass(countRabbit, positions));
-        _data.Rabbits.AddRange(CreateAllRabit(countGrass, positions));
+        InitEntities(countWolfs, countRabbit, countGrass);
 
         StartPlay(frames);
     }
@@ -53,7 +47,7 @@ internal class Game
     {
         while (true)
         {
-            Update();
+            Tick();
 
             Thread.Sleep((int)frames);
         }
@@ -61,10 +55,10 @@ internal class Game
 
     public virtual void DrawGraphics()
     {
-        char[,] field = new char[_data.FieldHeight, _data.FieldWidth];
+        char[,] field = new char[_data.Height, _data.Width];
 
-        for (int y = 0; y < _data.FieldHeight; y++)
-            for (int x = 0; x < _data.FieldWidth; x++)
+        for (int y = 0; y < _data.Height; y++)
+            for (int x = 0; x < _data.Width; x++)
                 field[y, x] = '.';
 
         foreach (Grass g in _data.Grass)
@@ -79,12 +73,12 @@ internal class Game
                 field[(int)w.Coord.y, (int)w.Coord.x] = 'W';
 
         Console.SetCursorPosition(0, 0);
-        Console.WriteLine(new string('=', (int)_data.FieldWidth + 2));
+        Console.WriteLine(new string('=', (int)_data.Width + 2));
 
-        for (int y = 0; y < _data.FieldHeight; y++)
+        for (int y = 0; y < _data.Height; y++)
         {
             Console.Write('|');
-            for (int x = 0; x < _data.FieldWidth; x++)
+            for (int x = 0; x < _data.Width; x++)
             {
                 char c = field[y, x];
                 Console.ForegroundColor = c switch
@@ -100,7 +94,46 @@ internal class Game
             Console.WriteLine('|');
         }
 
-        Console.WriteLine(new string('=', (int)_data.FieldWidth + 2));
+        Console.WriteLine(new string('=', (int)_data.Width + 2));
+    }
+
+    public void Tick()
+    {
+        foreach (var item in _data.Rabbits)
+        {
+            //TODO: вызвать Update логики кролей
+        }
+
+        foreach (var item in _data.Wolfs)
+        {
+            //TODO: вызвать Update логики волков
+        }
+
+        foreach (var item in _data.Grass)
+        {
+            //TODO: вызвать Update логики травы
+        }
+
+        //TODO: после всех циклов ОБЯЗАТЕЛЬНО сделать удаления всех мертвых и съединых животных и травы, и добавления новых, это делать ни в коем случае не в нутри самих циклов!!!
+
+        DrawGraphics();
+    }
+
+    public GameSnapshot GetSnapshot()
+    {
+        var cells = new List<Cell>((int)(_data.Width * _data.Height));
+
+        return new GameSnapshot { Width = _data.Width, Height = _data.Height, Cells = cells };
+    }
+
+    public void InitEntities(uint countWolfs, uint countRabbit, uint countGrass)
+    {
+        List<(uint x, uint y)> allPositions = CreatePositions(_data.Width, _data.Height);
+        Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
+
+        _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
+        _data.Grass.AddRange(CreateAllGrass(countRabbit, positions));
+        _data.Rabbits.AddRange(CreateAllRabit(countGrass, positions));
     }
 
     protected List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
@@ -160,27 +193,5 @@ internal class Game
         }
 
         return res;
-    }
-
-    protected void Update()
-    {
-        foreach (var item in _data.Rabbits)
-        {
-            //TODO: вызвать Update логики кролей
-        }
-
-        foreach (var item in _data.Wolfs)
-        {
-            //TODO: вызвать Update логики волков
-        }
-
-        foreach (var item in _data.Grass)
-        {
-            //TODO: вызвать Update логики травы
-        }
-
-        //TODO: после всех циклов ОБЯЗАТЕЛЬНО сделать удаления всех мертвых и съединых животных и травы, и добавления новых, это делать ни в коем случае не в нутри самих циклов!!!
-
-        DrawGraphics();
     }
 }
