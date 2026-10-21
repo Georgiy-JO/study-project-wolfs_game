@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace WolfGame
 {
-    internal class Herbivore:Animal
+    internal class Herbivore : Animal
     {
         protected Herbivore (uint health, uint fullness, Animal.Size size, (uint x, uint y) coordinates) : base(health, fullness, size, coordinates) { }
         public override void Feed(Food food)
@@ -13,6 +13,11 @@ namespace WolfGame
                 _fullness = Math.Min(_fullness + food.MeatValue, MaxFullness);
             // Console.WriteLine($"I was fet ({food.Name}), I am:{_fullness}/{MaxFullness}");
             }
+        }
+
+        public override void Update()
+        {
+
         }
     }
 }
