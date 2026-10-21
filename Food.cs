@@ -16,14 +16,14 @@ namespace WolfGame
         //public string Name { get; }
         public uint FullnessValue { get; }
         public FoodKind Kind { get; }
-        public (double x, double y)  Coord => _coordinates;
+        public (double x, double y) Coord => _coordinates;
 
 
-        public Food(uint fValue = 0, FoodKind kind = FoodKind.fkNone, (double x, double y) coord =default)
+        public Food(uint fValue = 0, FoodKind kind = FoodKind.fkNone, (double x, double y) coord = default)
         {
             //Name= name;
             FullnessValue = fValue;
-            Kind = kind; 
+            Kind = kind;
             _coordinates = coord;
         }
 
@@ -33,11 +33,13 @@ namespace WolfGame
 
     internal class Grass : Food             // check consts in constructor!!!!!!
     {
-        public Grass():base(2, FoodKind.fkGrassy, (0.0, 0.0)) { }
+        public Grass(uint fValue = 2, FoodKind kind = FoodKind.fkGrassy, (double x, double y) coord = default) : base(fValue, kind, coord) { }
+
+        public void Update() { }
     }
 
     internal class Remains : Food
     {
-        public Remains(uint fValue = 0):base(fValue, FoodKind.fkMeaty,(0.0, 0.0) ){}
+        public Remains(uint fValue = 0) : base(fValue, FoodKind.fkMeaty, (0.0, 0.0)) { }
     }
 }

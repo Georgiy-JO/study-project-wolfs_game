@@ -8,12 +8,12 @@ namespace WolfGame
 {
     internal  class Wolf: Carnivore
     {
-        
-    
+        public Wolf((uint x, uint y) coordinates = default) : base(5, 6, Animal.Size.szMedium, coordinates) { }
+
     }
     internal class Rabbit: Herbivore
     {
-        
-    
+        public Rabbit((uint x, uint y) coordinates = default) : base(5, 6, Animal.Size.szMedium, coordinates) { }
+
     }
 }

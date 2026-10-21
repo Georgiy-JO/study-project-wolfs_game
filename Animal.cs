@@ -62,5 +62,7 @@ namespace WolfGame
 
             return IsAlive;
         }
+
+        public abstract void Update();
     }
 }

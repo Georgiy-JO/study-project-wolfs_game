@@ -1,6 +1,6 @@
+using Microsoft.VisualBasic;
 using Wolf_Island;
-using static WolfGame.Game;
-using Timer = System.Timers.Timer;
+using static Wolf_Island.Cell;
 
 namespace WolfGame;
 
@@ -34,96 +34,56 @@ internal class Game
 
     protected Data _data;
 
-    public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5,  uint countRabbit = 5, uint countGrass = 10, uint frames = 2000)
+    public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5, uint countRabbit = 5, uint countGrass = 10)
     {
         _data = new Data(fieldWidth, fieldHeight, new List<Wolf>(), new List<Rabbit>(), new List<Grass>());
 
         InitEntities(countWolfs, countRabbit, countGrass);
-
-        StartPlay(frames);
-    }
-
-    public virtual void StartPlay(uint frames)
-    {
-        while (true)
-        {
-            Tick();
-
-            Thread.Sleep((int)frames);
-        }
-    }
-
-    public virtual void DrawGraphics()
-    {
-        char[,] field = new char[_data.Height, _data.Width];
-
-        for (int y = 0; y < _data.Height; y++)
-            for (int x = 0; x < _data.Width; x++)
-                field[y, x] = '.';
-
-        foreach (Grass g in _data.Grass)
-            field[(int)g.Coord.y, (int)g.Coord.x] = '"';
-
-        foreach (Rabbit r in _data.Rabbits)
-            if (r.IsAlive)
-                field[(int)r.Coord.y, (int)r.Coord.x] = 'r';
-
-        foreach (Wolf w in _data.Wolfs)
-            if (w.IsAlive)
-                field[(int)w.Coord.y, (int)w.Coord.x] = 'W';
-
-        Console.SetCursorPosition(0, 0);
-        Console.WriteLine(new string('=', (int)_data.Width + 2));
-
-        for (int y = 0; y < _data.Height; y++)
-        {
-            Console.Write('|');
-            for (int x = 0; x < _data.Width; x++)
-            {
-                char c = field[y, x];
-                Console.ForegroundColor = c switch
-                {
-                    'W' => ConsoleColor.Red,
-                    'r' => ConsoleColor.White,
-                    '"' => ConsoleColor.Green,
-                    _ => ConsoleColor.DarkGray,
-                };
-                Console.Write(c);
-            }
-            Console.ResetColor();
-            Console.WriteLine('|');
-        }
-
-        Console.WriteLine(new string('=', (int)_data.Width + 2));
     }
 
     public void Tick()
     {
-        foreach (var item in _data.Rabbits)
+        foreach (var rabbit in _data.Rabbits)
         {
-            //TODO: вызвать Update логики кролей
+            rabbit.Update();
         }
 
-        foreach (var item in _data.Wolfs)
+        foreach (var wolf in _data.Wolfs)
         {
-            //TODO: вызвать Update логики волков
+            wolf.Update();
         }
 
-        foreach (var item in _data.Grass)
+        foreach (var grass in _data.Grass)
         {
-            //TODO: вызвать Update логики травы
+            grass.Update();
         }
 
-        //TODO: после всех циклов ОБЯЗАТЕЛЬНО сделать удаления всех мертвых и съединых животных и травы, и добавления новых, это делать ни в коем случае не в нутри самих циклов!!!
+        _data.Rabbits.RemoveAll((r) => !r.IsAlive);
+        _data.Wolfs.RemoveAll((r) => !r.IsAlive);
 
-        DrawGraphics();
+        //TODO: добавить удаление съеденой травы, и добавления новых животных и травы, это делать ни в коем случае не в нутри самих циклов!!!
     }
 
     public GameSnapshot GetSnapshot()
     {
         var cells = new List<Cell>((int)(_data.Width * _data.Height));
 
-        return new GameSnapshot { Width = _data.Width, Height = _data.Height, Cells = cells };
+        for (uint y = 0; y < _data.Height; y++)
+            for (uint x = 0; x < _data.Width; x++)
+                cells.Add(new Cell(x, y, CellType.Empty));
+
+        foreach (var g in _data.Grass)
+            cells[(int)(g.Coord.y * _data.Width + g.Coord.x)] = new Cell((uint)g.Coord.x, (uint)g.Coord.y, CellType.Grass);
+
+        foreach (var r in _data.Rabbits)
+            if (r.IsAlive)
+                cells[(int)(r.Coord.y * _data.Width + r.Coord.x)] = new Cell((uint)r.Coord.x, (uint)r.Coord.y, CellType.Rabbit);
+
+        foreach (var w in _data.Wolfs)
+            if (w.IsAlive)
+                cells[(int)(w.Coord.y * _data.Width + w.Coord.x)] = new Cell((uint)w.Coord.x, (uint)w.Coord.y, CellType.Wolf);
+
+        return new GameSnapshot(_data.Width, _data.Height, cells);
     }
 
     public void InitEntities(uint countWolfs, uint countRabbit, uint countGrass)
@@ -132,8 +92,8 @@ internal class Game
         Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
 
         _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
-        _data.Grass.AddRange(CreateAllGrass(countRabbit, positions));
-        _data.Rabbits.AddRange(CreateAllRabit(countGrass, positions));
+        _data.Rabbits.AddRange(CreateAllRabit(countRabbit, positions));
+        _data.Grass.AddRange(CreateAllGrass(countGrass, positions));
     }
 
     protected List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
@@ -156,8 +116,7 @@ internal class Game
             if (!positions.TryPop(out var pos))
                 throw new InvalidOperationException("The free cages for wolves are empty.!");
 
-            //TODO: волку передавать pos
-            res.Add(new Wolf());
+            res.Add(new Wolf(pos));
         }
 
         return res;
@@ -172,8 +131,7 @@ internal class Game
             if (!positions.TryPop(out var pos))
                 throw new InvalidOperationException("The free cages for wolves are empty.!");
 
-            //TODO: кролю передавать pos
-            res.Add(new Rabbit());
+            res.Add(new Rabbit(pos));
         }
 
         return res;
@@ -188,8 +146,7 @@ internal class Game
             if (!positions.TryPop(out var pos))
                 throw new InvalidOperationException("The free cages for wolves are empty.!");
 
-            //TODO: траве передавать pos
-            res.Add(new Grass());
+            res.Add(new Grass(coord: pos));
         }
 
         return res;
