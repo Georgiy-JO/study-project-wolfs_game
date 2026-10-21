@@ -15,6 +15,7 @@ namespace WolfGame
         public override uint MeatValue { get => 5; }
 
         public Wolf((uint x, uint y) coordinates = default) : base(5,6,Animal.Size.szMedium, coordinates) { }
+
     }
     internal class Rabbit: Herbivore
     {
