@@ -40,6 +40,7 @@ namespace WolfGame
 
 
         public abstract void Feed(Food food);
+        public virtual bool Update(Game.Data data) {  return true; }
         public void SetCoord(uint x, uint y) => _coordinates=(x,y);
         /// <summary>
         /// 

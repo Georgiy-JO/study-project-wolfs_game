@@ -11,7 +11,7 @@ namespace WolfGame
         {
             if (IsAlive && food.Kind == Food.FoodKind.fkMeaty)
             {
-                _fullness = Math.Min(_fullness + food.MeatValue, MaxFullness);
+                _fullness = Math.Min(_fullness + food.Value, MaxFullness);
                 // Console.WriteLine($"I was fet ({food.Name}), I am:{Fullness}/{MaxFullness}");
             }
 
