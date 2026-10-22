@@ -12,13 +12,13 @@ namespace WolfGame
         {
             szSmall=1, szMedium=2, szLarge=3
         }
-        
 
+        
         const int HealthAdd = 1;
         protected uint _health;
         protected uint _fullness;
         protected Size _size;
-        private (double x, double y) _coordinates;
+        private (uint x, uint y) _coordinates;
 
 
         public bool IsAlive  => _health > 0;
@@ -26,21 +26,24 @@ namespace WolfGame
         public uint Fullness => _fullness;
         public bool IsFull => _fullness == MaxFullness;
         public bool IsHealthy => _health == MaxHealth;
-        public (double x, double y) Coord => _coordinates;
+        public (uint x, uint y) Coord => _coordinates;
         
 
         protected virtual uint MaxHealth { get => 5; }
         protected virtual uint MaxFullness { get => 5; }
         protected virtual uint MaxMoveDistance { get => 1;}
-        public virtual uint FullnessValue { get => 2;} 
+        public virtual uint MeatValue { get => 2;} 
+        public virtual uint FirldOfView { get => 3;}
 
 
-        public Animal(uint health = 5, uint fullness = 5, Size size=Size.szMedium, (double x, double y) coordinates=default) 
+        public Animal(uint health = 5, uint fullness = 5, Size size=Size.szMedium, (uint x, uint y) coordinates=default) 
         { _health = health; _fullness = fullness; _size = size; _coordinates=coordinates; }
 
 
         public abstract void Feed(Food food);
-        protected void SetCoord(double x, double y) => _coordinates=(x,y);
+        protected abstract Dictionary<(long x, long y), int> WeightField(Game.Data data);
+        public virtual bool Update(Game.Data data) {  return true; }
+        public void SetCoord(uint x, uint y) => _coordinates=(x,y);
         /// <summary>
         /// 
         /// </summary>
@@ -62,7 +65,5 @@ namespace WolfGame
 
             return IsAlive;
         }
-
-        public abstract void Update();
     }
 }

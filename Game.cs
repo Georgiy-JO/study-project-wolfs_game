@@ -8,6 +8,36 @@ public enum Direction { dNorth, dSouth, dEast, dWest, dNorthEast, dNorthWest, dS
 
 internal class Game
 {
+    public enum Direction   // 8
+    {
+        dNorth=0, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest
+    }
+    public static (long x, long y) GetCoords(Direction direction, (uint x, uint y) curCoords)
+    {
+        long x = curCoords.x;
+        long y = curCoords.y;
+        switch (direction)
+        {
+            case Direction.dNorth:
+                return (x, y--);
+            case Direction.dSouth:
+                return (x, y++);
+            case Direction.dEast:
+                return (x++, y);
+            case Direction.dWest:
+                return (x--, y);
+            case Direction.dNorthEast:
+                return (x++, y--);
+            case Direction.dNorthWest:
+                return (x--, y--);
+            case Direction.dSouthEast:
+                return (x++, y++);
+            case Direction.dSouthWest:
+                return (x--, y++);
+            default:
+                return (x, y);
+        }
+    }
     public struct Data
     {
         private readonly uint _fieldWidth;
@@ -45,17 +75,24 @@ internal class Game
     {
         foreach (var rabbit in _data.Rabbits)
         {
-            rabbit.Update();
+            rabbit.Update(_data);
         }
 
         foreach (var wolf in _data.Wolfs)
         {
-            wolf.Update();
+            wolf.Update(_data);
         }
 
-        foreach (var grass in _data.Grass)
         {
-            grass.Update();
+            List<(uint x, uint y)> newGrass = new List<(uint x, uint y)>();
+            foreach (var grass in _data.Grass)
+            {
+                grass.Update(_data, newGrass);
+            }
+            foreach (var ng in newGrass)
+            {
+                _data.Grass.Add(new Grass(ng));
+            }
         }
 
         _data.Rabbits.RemoveAll((r) => !r.IsAlive);

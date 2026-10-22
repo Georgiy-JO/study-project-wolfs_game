@@ -1,4 +1,4 @@
-﻿using WolfGame;
+using WolfGame;
 
 namespace Wolf_Island
 {
