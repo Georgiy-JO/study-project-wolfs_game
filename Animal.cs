@@ -33,7 +33,7 @@ namespace WolfGame
         protected virtual uint MaxFullness { get => 5; }
         protected virtual uint MaxMoveDistance { get => 1;}
         public virtual uint MeatValue { get => 2;} 
-        public virtual uint FirldOfView { get => 3;}
+        public virtual uint FirldOfView { get => 2;}
 
 
         public Animal(uint health = 5, uint fullness = 5, Size size=Size.szMedium, (uint x, uint y) coordinates=default) 

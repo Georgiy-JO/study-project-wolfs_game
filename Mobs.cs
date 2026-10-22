@@ -57,18 +57,12 @@ namespace WolfGame
         public Rabbit((uint x, uint y) coordinates = default) : base(5, 6, Animal.Size.szMedium, coordinates) { }
         public override bool Update(Game.Data data) 
         {
-            List<(uint x, uint y)> enemies;
-            List<(uint x, uint y)> food;
-            FindEnemyAndFood(data, out enemies, out food);
+            var weightField = WeightField(data);
+            ()
 
             if (Fullness == MaxFullness)
             {
-                Random rnd = new Random();
-                do
-                {
-                    //here
-                } while ();
-
+                // random
             }
             else
             {
@@ -81,24 +75,59 @@ namespace WolfGame
         {
 
             Dictionary<(long x, long y), int> weightField = new ();
-            (long x, long y) beginCoord = ((long)Coord.x - 3, (long)Coord.y - 3);
-            (long x, long y) endCoord = ((long)Coord.x + 3, (long)Coord.y + 3);
+            (long x, long y) beginCoord = ((long)Coord.x - FirldOfView, (long)Coord.y - FirldOfView);
+            (long x, long y) endCoord = ((long)Coord.x + FirldOfView, (long)Coord.y + FirldOfView);
 
-           
-                
+            // Food - 15  -  2  -  1
+            // wolf - -15  -  -2  -  -1
+            // edge -  -50
+            int edgeWeight = -50;
+            int pointWeight = 15;
+            //int closeWeight = 2;
+            int distantWeight = 1;
 
-            for(long j=beginCoord.x; j<=endCoord.x; j++)
+            List<(long x, long y)> enemies = new();
+            List<(long x, long y)> food = new();
+            for (long j=beginCoord.y; j<=endCoord.y; j++)
             {
                 for (long k = beginCoord.x; k <= endCoord.x; k++)
                 {
-
-                    if (data.Wolfs.Exists(x => x.Coord == (j, k)))
-                        enemies.Add((j, k));
-                    if (data.Grass.Exists(x => x.Coord == (j, k)))
-                        food.Add((j, k));
+                    if (j < 0 || k < 0 || j > data.Height || k > data.Width) weightField[(k, j)] = edgeWeight;
+                    else
+                    {
+                        weightField[(k, j)] = 0;
+                        if (data.Wolfs.Exists(x => x.Coord == (k, j)))
+                            enemies.Add((k, j));
+                        if (data.Grass.Exists(x => x.Coord == (k, j)))
+                            food.Add((k, j));
+                    }
                 }
             }
-            
+            foreach (var en in enemies)
+            {
+                weightField[(en.x, en.y)] -= pointWeight;
+                for(long i= en.y - 1; i <= en.y + 1; i++)
+                {
+                    for (long j = en.x - 1; j <= en.x + 1; j++)
+                    {
+                        if(weightField.ContainsKey((j, i)))         weightField[(j, i)] -= distantWeight;
+                    }
+                }
+            }
+            foreach (var fd in food)
+            {
+                weightField[(fd.x, fd.y)] += pointWeight;
+                for (long i = fd.y - 1; i <= fd.y + 1; i++)
+                {
+                    for (long j = fd.x - 1; j <= fd.x + 1; j++)
+                    {
+                        if (weightField.ContainsKey((j, i))) weightField[(j, i)] += distantWeight;
+                    }
+                }
+            }
+
+            return weightField;
+
         }
 
     }

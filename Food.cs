@@ -35,6 +35,8 @@ namespace WolfGame
         public Grass():base(2, FoodKind.fkGrassy, (0, 0)) { }
         public Grass((uint x, uint y) coords): base(2, FoodKind.fkGrassy, (coords.x, coords.y)) { }
         public override bool Update(Game.Data data, List<(uint x, uint y)>? newData) {
+            if(newData==null)   return false;
+            
             Game.Direction[] possiblePlacing = new Game.Direction[4] {Game.Direction.dNorth, Game.Direction.dSouth, Game.Direction.dEast, Game.Direction.dWest };
             Random rnd = new Random();
             possiblePlacing = possiblePlacing.OrderBy(x => rnd.Next()).ToArray();

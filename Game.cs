@@ -19,21 +19,21 @@ internal class Game
         switch (direction)
         {
             case Direction.dNorth:
-                return (x, y--);
+                return (x, y-1);
             case Direction.dSouth:
-                return (x, y++);
+                return (x, y+1);
             case Direction.dEast:
-                return (x++, y);
+                return (x+1, y);
             case Direction.dWest:
-                return (x--, y);
+                return (x-1, y);
             case Direction.dNorthEast:
-                return (x++, y--);
+                return (x+1, y-1);
             case Direction.dNorthWest:
-                return (x--, y--);
+                return (x-1, y-1);
             case Direction.dSouthEast:
-                return (x++, y++);
+                return (x+1, y+1);
             case Direction.dSouthWest:
-                return (x--, y++);
+                return (x-1, y+1);
             default:
                 return (x, y);
         }
