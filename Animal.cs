@@ -12,8 +12,8 @@ namespace WolfGame
         {
             szSmall=1, szMedium=2, szLarge=3
         }
-        
 
+        
         const int HealthAdd = 1;
         protected uint _health;
         protected uint _fullness;
@@ -33,6 +33,7 @@ namespace WolfGame
         protected virtual uint MaxFullness { get => 5; }
         protected virtual uint MaxMoveDistance { get => 1;}
         public virtual uint MeatValue { get => 2;} 
+        public virtual uint FirldOfView { get => 3;}
 
 
         public Animal(uint health = 5, uint fullness = 5, Size size=Size.szMedium, (uint x, uint y) coordinates=default) 
@@ -40,6 +41,7 @@ namespace WolfGame
 
 
         public abstract void Feed(Food food);
+        protected abstract Dictionary<(long x, long y), int> WeightField(Game.Data data);
         public virtual bool Update(Game.Data data) {  return true; }
         public void SetCoord(uint x, uint y) => _coordinates=(x,y);
         /// <summary>

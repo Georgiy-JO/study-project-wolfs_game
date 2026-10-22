@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection.Metadata;
@@ -7,6 +8,31 @@ using System.Text;
 
 namespace WolfGame
 {
+    //public struct LocalField{
+        
+
+            
+    //    private Dictionary<(long _x,long _y), int> _weight;
+    //    public static int _size = 7;
+
+    //    public int GetWeight(long x,long y) => _weight[(x,y)];
+    //    public void SetWeight(int val) => _weight[(x, y)] = val;
+    //    public LocalField(uint x, uint y)
+    //    {
+    //        _weight = new Dictionary<(long _x, long _y), int>();
+    //        for(long i =0;i< _size; i++)
+    //        {
+    //            for(long j =0;j< _size; j++)
+    //            {
+    //                _weight[((long)y - i - 3, (long)x - j - 3)]=0;
+    //            }
+    //        }
+
+    //    }
+
+    //}
+
+
     internal  class Wolf: Carnivore
     {
         protected override uint MaxHealth { get => 8; }
@@ -51,26 +77,28 @@ namespace WolfGame
 
             return true;
         }
-        private void FindEnemyAndFood(Game.Data data, out List<(uint x, uint y)> enemies, out List<(uint x, uint y)> food)
+        protected override Dictionary<(long x, long y), int> WeightField(Game.Data data)
         {
-            enemies = new List<(uint x, uint y)>();
-            food = new List<(uint x, uint y)>();
-            for (int i = 1; i <= 3; i++)
-            {
-                (uint x, uint y) beginCoord = ((uint)(Math.Max((long)Coord.x - i, 0)), (uint)(Math.Max((long)Coord.y - i, 0)));
-                (uint x, uint y) endCoord = ((uint)(Math.Min((long)Coord.x + i, 0)), (uint)(Math.Min((long)Coord.y + i, 0)));
 
-                for(uint j=beginCoord.x; j<=endCoord.x; j++)
+            Dictionary<(long x, long y), int> weightField = new ();
+            (long x, long y) beginCoord = ((long)Coord.x - 3, (long)Coord.y - 3);
+            (long x, long y) endCoord = ((long)Coord.x + 3, (long)Coord.y + 3);
+
+           
+                
+
+            for(long j=beginCoord.x; j<=endCoord.x; j++)
+            {
+                for (long k = beginCoord.x; k <= endCoord.x; k++)
                 {
-                    for (uint k = beginCoord.x; k <= endCoord.x; k++)
-                    {
-                        if (data.Wolfs.Exists(x => x.Coord == (j, k)))
-                            enemies.Add((j, k));
-                        if (data.Grass.Exists(x => x.Coord == (j, k)))
-                            food.Add((j, k));
-                    }
+
+                    if (data.Wolfs.Exists(x => x.Coord == (j, k)))
+                        enemies.Add((j, k));
+                    if (data.Grass.Exists(x => x.Coord == (j, k)))
+                        food.Add((j, k));
                 }
             }
+            
         }
 
     }

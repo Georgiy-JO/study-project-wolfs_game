@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WolfGame
 {
-    internal class Carnivore:Animal
+    internal abstract class Carnivore:Animal
     {
         protected Carnivore (uint health, uint fullness, Animal.Size size, (uint x, uint y) coordinates) : base(health, fullness, size, coordinates) { }
         public override void Feed(Food food)
@@ -15,6 +15,6 @@ namespace WolfGame
                 // Console.WriteLine($"I was fet ({food.Name}), I am:{Fullness}/{MaxFullness}");
             }
 
-        }
+    }
     }
 }

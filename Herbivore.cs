@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WolfGame
 {
-    internal class Herbivore : Animal
+    internal abstract class Herbivore : Animal
     {
         protected Herbivore (uint health, uint fullness, Animal.Size size, (uint x, uint y) coordinates) : base(health, fullness, size, coordinates) { }
         public override void Feed(Food food)
