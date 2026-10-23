@@ -55,7 +55,9 @@ namespace Wolf_Island.Entities.Animals.Mobs
         protected override void Feedhandler(Game.Data data)
         {
             var tmpGrassThere = data.Grass.Find(x => x.Coord == (Coord));
+#pragma warning disable CS8604 // Possible null reference argument.
             if (this.Feed(tmpGrassThere)) data.Grass.Remove(tmpGrassThere);
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
     }
