@@ -1,6 +1,8 @@
 using Microsoft.VisualBasic;
 using Wolf_Island;
+using Wolf_Island.Entities;
 using static Wolf_Island.Cell;
+using Wolf_Island.Entities.Animals.Mobs;
 
 namespace WolfGame;
 
@@ -95,8 +97,8 @@ internal class Game
             }
         }
 
-        _data.Rabbits.RemoveAll((r) => !r.IsAlive);
-        _data.Wolfs.RemoveAll((r) => !r.IsAlive);
+        _data.Rabbits.RemoveAll((r) => !r.IsAlive);     //this must be fixed
+        _data.Wolfs.RemoveAll((r) => !r.IsAlive);       //this must be fixed
 
         //TODO: добавить удаление съеденой травы, и добавления новых животных и травы, это делать ни в коем случае не в нутри самих циклов!!!
     }
