@@ -10,23 +10,22 @@ namespace Wolf_Island.Entities.Animals
 {
     internal abstract class Animal
     {
-        public enum Size
+        public enum Sizes
         {
             szSmall = 1, szMedium = 2, szLarge = 3
         }
 
 
-        protected readonly uint MaxHealth;
-        protected readonly uint MaxFullness;
+        protected uint MaxHealth { get; }
+        protected uint MaxFullness { get; }
         //protected virtual uint MaxMoveDistance { get => 1;}       // not used
-        public readonly uint MeatValue;
-        public readonly uint FieldOfView;
+        public uint MeatValue { get; }
+        public uint FieldOfView { get; }
         private readonly uint MaxHungerTimer;
         private readonly uint MaxLifelossTimer;
-        protected readonly Size _size;                          // not really used in this game instance (can be fixed)
+        public Sizes Size { get; }
 
 
-        //const int HealthAdd = 1;
         protected uint _health;
         protected uint _fullness;
         private (uint x, uint y) _coordinates;
@@ -53,7 +52,7 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
         /// <param name="coordinates">spawn location</param>
         public Animal(uint maxHealth = 1, uint maxFullness = 1,
-                      uint meatValue = 1, uint fieldOfView = 1, Size size = Size.szMedium,
+                      uint meatValue = 1, uint fieldOfView = 1, Sizes size = Sizes.szMedium,
                       uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
                        (uint x, uint y) coordinates = default)
         {
@@ -67,7 +66,7 @@ namespace Wolf_Island.Entities.Animals
             _lifelossTimer = MaxLifelossTimer;
             _health = MaxHealth;
             _fullness = MaxFullness;
-            _size = size;
+            Size = size;
             _coordinates = coordinates;
         }
         /// <summary>
@@ -85,7 +84,7 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="coordinates">spawn location</param>
         public Animal(uint maxHealth = 1, uint maxFullness = 1,
                       uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
-                      uint meatValue = 1, uint fieldOfView = 1, Size size = Size.szMedium,
+                      uint meatValue = 1, uint fieldOfView = 1, Sizes size = Sizes.szMedium,
                       uint health = 1, uint fullness = 1,
                        (uint x, uint y) coordinates = default)
         {
@@ -99,7 +98,7 @@ namespace Wolf_Island.Entities.Animals
             _lifelossTimer = MaxLifelossTimer;
             _health = health;
             _fullness = fullness;
-            _size = size;
+            Size = size;
             _coordinates = coordinates;
         }
 

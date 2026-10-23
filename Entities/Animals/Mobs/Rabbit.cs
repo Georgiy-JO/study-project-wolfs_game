@@ -27,7 +27,7 @@ namespace Wolf_Island.Entities.Animals.Mobs
         /// </summary>
         /// <param name="coordinates">spawn location</param>
         public Rabbit((uint x, uint y) coordinates = default) : base(maxHealth: 4, maxFullness: 3,
-                                                                     meatValue: 2, FieldOfView: 2, size: Size.szSmall,
+                                                                     meatValue: 2, FieldOfView: 2, size: Sizes.szSmall,
                                                                      maxHungerTimer: 1, maxLifelossTimer: 1,
                                                                      coordinates)
         { }
@@ -35,14 +35,14 @@ namespace Wolf_Island.Entities.Animals.Mobs
 
         public override void Update(Game.Data data)
         {
-            Movehandler(data);              //  handle moving
-            Status();                       // hanger and life handle
+            Movehandler(data);              // handle moving
             Feedhandler(data);              // handle feeding
+            Status();                       // hanger and life handle
         }
         protected override void Movehandler(Game.Data data)
         {
             var weightField = Service.WeightField(data, this);
-            var possibleMoves = (Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray()).GetShuffledCollections();
+            var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
             ((long x, long y), int weight) theMove = (Coord, -5);
 
             foreach (var possibleMove in possibleMoves)
@@ -54,9 +54,9 @@ namespace Wolf_Island.Entities.Animals.Mobs
         }
         protected override void Feedhandler(Game.Data data)
         {
-            var tmpGrassThere = data.Grass.Find(x => x.Coord == (Coord));
+            var tmpFoodThere = data.Food.Find(x => x.Coord == Coord);
 #pragma warning disable CS8604 // Possible null reference argument.
-            if (this.Feed(tmpGrassThere)) data.Grass.Remove(tmpGrassThere);
+            if (this.Feed(tmpFoodThere)) data.Food.Remove(tmpFoodThere);
 #pragma warning restore CS8604 // Possible null reference argument.
         }
 

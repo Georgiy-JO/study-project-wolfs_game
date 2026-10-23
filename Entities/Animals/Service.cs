@@ -10,6 +10,7 @@ namespace Wolf_Island.Entities.Animals
     {
         public static Dictionary<(long x, long y), int> WeightField(Game.Data data, Animal animal)
         {
+            ArgumentNullException.ThrowIfNull(animal);
 
             Dictionary<(long x, long y), int> weightField = new();
             (long x, long y) beginCoord = ((long)animal.Coord.x - animal.FieldOfView, (long)animal.Coord.y - animal.FieldOfView);
@@ -31,9 +32,11 @@ namespace Wolf_Island.Entities.Animals
                     else
                     {
                         weightField[(k, j)] = 0;
-                        if (data.Wolfs.Exists(x => x.Coord == (k, j)))
+                        if (data.Wolfs.Exists(x => x?.Coord == (k, j) && x is Carnivore && x.Size > animal.Size))          // it shouldn't be called Wolfs though
                             enemies.Add((k, j));
-                        if (data.Grass.Exists(x => x.Coord == (k, j)))
+                        if (data.Food.Exists(x => x?.Coord == (k, j) &&
+                                    ((animal is Herbivore && x.Kind == Food.FoodKind.fkGrassy) ||
+                                     (animal is Carnivore && x.Kind == Food.FoodKind.fkMeaty))))
                             food.Add((k, j));
                     }
                 }

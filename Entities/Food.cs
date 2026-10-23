@@ -39,9 +39,8 @@ namespace Wolf_Island.Entities
         {
             if (newData == null) return;
 
-            Game.Direction[] possiblePlacing = new Game.Direction[4] { Game.Direction.dNorth, Game.Direction.dSouth, Game.Direction.dEast, Game.Direction.dWest };
-            Random rnd = new Random();
-            possiblePlacing = possiblePlacing.OrderBy(x => rnd.Next()).ToArray();
+            Game.Direction[] possiblePlacing = { Game.Direction.dNorth, Game.Direction.dSouth, Game.Direction.dEast, Game.Direction.dWest };
+            possiblePlacing = possiblePlacing.GetShuffledCollections();
 
             ushort placed = 2;
             foreach (var pp in possiblePlacing)
@@ -54,8 +53,8 @@ namespace Wolf_Island.Entities
                     if (coords == data.Rabbits[i].Coord) flag = false;
                 for (int i = 0; flag && i < data.Wolfs.Count; i++)
                     if (coords == data.Wolfs[i].Coord) flag = false;
-                for (int i = 0; flag && i < data.Grass.Count; i++)
-                    if (coords == data.Grass[i].Coord) flag = false;
+                for (int i = 0; flag && i < data.Food.Count; i++)
+                    if (coords == data.Food[i].Coord) flag = false;
 
                 if (flag)
                 {
@@ -64,7 +63,6 @@ namespace Wolf_Island.Entities
                 }
                 if (placed == 0) break;
             }
-            return;
         }
     }
 

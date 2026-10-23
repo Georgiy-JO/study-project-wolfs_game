@@ -8,9 +8,9 @@ namespace Wolf_Island.Entities.Animals
     internal abstract class Herbivore : Animal
     {
         protected Herbivore(uint maxHealth, uint maxFullness,
-                            uint meatValue, uint FieldOfView, Size size,
+                            uint meatValue, uint FieldOfView, Sizes size,
                             uint maxHungerTimer, uint maxLifelossTimer,
-                             (uint x, uint y) coordinates) :
+                            (uint x, uint y) coordinates) :
                                     base(maxHealth, maxFullness, meatValue, FieldOfView, size, maxHungerTimer, maxLifelossTimer, coordinates)
         { }
         public override bool Feed(Food food)

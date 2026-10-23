@@ -46,21 +46,21 @@ internal class Game
         private readonly uint _fieldHeight;
         private readonly List<Wolf> _wolfs;
         private readonly List<Rabbit> _rabbits;
-        private readonly List<Grass> _grass;
+        private readonly List<Food> _food;
 
         public readonly uint Width => _fieldWidth;
         public readonly uint Height => _fieldHeight;
         public readonly List<Wolf> Wolfs => _wolfs;
         public readonly List<Rabbit> Rabbits => _rabbits;
-        public readonly List<Grass> Grass => _grass;
+        public readonly List<Food> Food => _food;
 
-        public Data(uint width, uint height, List<Wolf> wolfs, List<Rabbit> rabbits, List<Grass> grass)
+        public Data(uint width, uint height, List<Wolf> wolfs, List<Rabbit> rabbits, List<Food> food)
         {
             _fieldWidth = width;
             _fieldHeight = height;
             _wolfs = wolfs;
             _rabbits = rabbits;
-            _grass = grass;
+            _food = food;
         }
     }
 
@@ -68,7 +68,7 @@ internal class Game
 
     public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5, uint countRabbit = 5, uint countGrass = 10)
     {
-        _data = new Data(fieldWidth, fieldHeight, new List<Wolf>(), new List<Rabbit>(), new List<Grass>());
+        _data = new Data(fieldWidth, fieldHeight, new List<Wolf>(), new List<Rabbit>(), new List<Food>());
 
         InitEntities(countWolfs, countRabbit, countGrass);
     }
@@ -85,22 +85,32 @@ internal class Game
             wolf.Update(_data);
         }
 
+        
+        List<(uint x, uint y)> newGrass = new List<(uint x, uint y)>();
+        foreach (var grass in _data.Food.OfType<Grass>())       // the check of type is not really needed here, because Remains has update too
         {
-            List<(uint x, uint y)> newGrass = new List<(uint x, uint y)>();
-            foreach (var grass in _data.Grass)
-            {
-                grass.Update(_data, newGrass);
-            }
-            foreach (var ng in newGrass)
-            {
-                _data.Grass.Add(new Grass(ng));
-            }
+            grass.Update(_data, newGrass);
         }
+        foreach (var ng in newGrass)
+        {
+            _data.Food.Add(new Grass(ng));
+        }
+        
 
-        _data.Rabbits.RemoveAll((r) => !r.IsAlive);     //this must be fixed
-        _data.Wolfs.RemoveAll((r) => !r.IsAlive);       //this must be fixed
+        _data.Rabbits.RemoveAll(r =>
+        {
+            if (r.IsAlive) return false;
+            _data.Food.Add(new Remains(r.Coord, r.MeatValue));
+            return true;
+        });
+        _data.Wolfs.RemoveAll(r =>
+        {
+            if (r.IsAlive) return false;
+            _data.Food.Add(new Remains(r.Coord, r.MeatValue));
+            return true;
+        });
 
-        //TODO: добавить удаление съеденой травы, и добавления новых животных и травы, это делать ни в коем случае не в нутри самих циклов!!!
+        //TODO: добавить рождение новых животных (if you feel lucky)
     }
 
     public GameSnapshot GetSnapshot()
@@ -111,7 +121,7 @@ internal class Game
             for (uint x = 0; x < _data.Width; x++)
                 cells.Add(new Cell(x, y, CellType.Empty));
 
-        foreach (var g in _data.Grass)
+        foreach (var g in _data.Food)
             cells[(int)(g.Coord.y * _data.Width + g.Coord.x)] = new Cell((uint)g.Coord.x, (uint)g.Coord.y, CellType.Grass);
 
         foreach (var r in _data.Rabbits)
@@ -132,7 +142,7 @@ internal class Game
 
         _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
         _data.Rabbits.AddRange(CreateAllRabbits(countRabbit, positions));
-        _data.Grass.AddRange(CreateAllGrass(countGrass, positions));
+        _data.Food.AddRange(CreateAllGrass(countGrass, positions));
     }
 
     protected static List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
