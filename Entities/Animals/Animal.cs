@@ -12,7 +12,7 @@ namespace Wolf_Island.Entities.Animals
     {
         public enum Size
         {
-            szSmall=1, szMedium=2, szLarge=3
+            szSmall = 1, szMedium = 2, szLarge = 3
         }
 
 
@@ -34,7 +34,7 @@ namespace Wolf_Island.Entities.Animals
         private uint _lifelossTimer;
 
 
-        public bool IsAlive  => _health > 0;
+        public bool IsAlive => _health > 0;
         public void Kill() => _health = 0;
         public uint Fullness => _fullness;
         public bool IsFull => _fullness == MaxFullness;
@@ -52,23 +52,23 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
         /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
         /// <param name="coordinates">spawn location</param>
-        public Animal(uint maxHealth = 1, uint maxFullness = 1,  
-                      uint meatValue=1, uint feildOfView=1, Size size = Size.szMedium,
-                      uint maxHungerTimer=2, uint maxLifelossTimer = 2,
-                       (uint x, uint y) coordinates=default) 
+        public Animal(uint maxHealth = 1, uint maxFullness = 1,
+                      uint meatValue = 1, uint feildOfView = 1, Size size = Size.szMedium,
+                      uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
+                       (uint x, uint y) coordinates = default)
         {
-            MaxHealth=maxHealth;
-            MaxFullness=maxFullness;
-            MeatValue=meatValue;
+            MaxHealth = maxHealth;
+            MaxFullness = maxFullness;
+            MeatValue = meatValue;
             FeildOfView = feildOfView;
             MaxHungerTimer = maxHungerTimer;
             MaxLifelossTimer = maxLifelossTimer;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
-            _health = MaxHealth; 
+            _health = MaxHealth;
             _fullness = MaxFullness;
-            _size = size; 
-            _coordinates=coordinates; 
+            _size = size;
+            _coordinates = coordinates;
         }
         /// <summary>
         /// An Animal constructor.
@@ -93,8 +93,8 @@ namespace Wolf_Island.Entities.Animals
             MaxFullness = maxFullness;
             MeatValue = meatValue;
             FeildOfView = feildOfView;
-            MaxHungerTimer=maxHungerTimer;
-            MaxLifelossTimer=maxLifelossTimer;
+            MaxHungerTimer = maxHungerTimer;
+            MaxLifelossTimer = maxLifelossTimer;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = health;
@@ -142,6 +142,6 @@ namespace Wolf_Island.Entities.Animals
 
 
 
-       
+
     }
 }

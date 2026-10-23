@@ -15,7 +15,7 @@ namespace Wolf_Island.Entities.Animals
             (long x, long y) beginCoord = ((long)animal.Coord.x - animal.FeildOfView, (long)animal.Coord.y - animal.FeildOfView);
             (long x, long y) endCoord = ((long)animal.Coord.x + animal.FeildOfView, (long)animal.Coord.y + animal.FeildOfView);
 
-            
+
             int edgeWeight = -50;           // weight of out of field coordinates
             int pointPositiveWeight = 15;   // weight of food coordinates
             int pointNegativeWeight = -30;  // weight enemies coordinates

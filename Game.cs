@@ -12,7 +12,7 @@ internal class Game
 {
     public enum Direction   // 8
     {
-        dNorth=0, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest
+        dNorth = 0, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest
     }
     public static (long x, long y) GetCoords(Direction direction, (uint x, uint y) curCoords)
     {
@@ -21,21 +21,21 @@ internal class Game
         switch (direction)
         {
             case Direction.dNorth:
-                return (x, y-1);
+                return (x, y - 1);
             case Direction.dSouth:
-                return (x, y+1);
+                return (x, y + 1);
             case Direction.dEast:
-                return (x+1, y);
+                return (x + 1, y);
             case Direction.dWest:
-                return (x-1, y);
+                return (x - 1, y);
             case Direction.dNorthEast:
-                return (x+1, y-1);
+                return (x + 1, y - 1);
             case Direction.dNorthWest:
-                return (x-1, y-1);
+                return (x - 1, y - 1);
             case Direction.dSouthEast:
-                return (x+1, y+1);
+                return (x + 1, y + 1);
             case Direction.dSouthWest:
-                return (x-1, y+1);
+                return (x - 1, y + 1);
             default:
                 return (x, y);
         }
@@ -185,7 +185,7 @@ internal class Game
             if (!positions.TryPop(out var pos))
                 throw new InvalidOperationException("The free cages for wolves are empty.!");
 
-            res.Add(new Grass(coord: pos));
+            res.Add(new Grass(coords: pos));
         }
 
         return res;

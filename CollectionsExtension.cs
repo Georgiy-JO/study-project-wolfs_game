@@ -31,7 +31,7 @@ internal static class CollectionsExtension
     public static T[] GetShuffledCollections<T>(this IEnumerable<T> collection)
     {
         ArgumentNullException.ThrowIfNull(collection);
-        
+
         T[] arrTemp = collection.ToArray();
 
         Random.Shared.Shuffle(arrTemp);  // only with .NET 8+

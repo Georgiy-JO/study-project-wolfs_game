@@ -10,15 +10,17 @@ namespace Wolf_Island.Entities.Animals
         protected Herbivore(uint maxHealth, uint maxFullness,
                             uint meatValue, uint feildOfView, Size size,
                             uint maxHungerTimer, uint maxLifelossTimer,
-                             (uint x, uint y) coordinates) : 
-                                    base(maxHealth, maxFullness, meatValue, feildOfView, size, maxHungerTimer, maxLifelossTimer, coordinates) { }
+                             (uint x, uint y) coordinates) :
+                                    base(maxHealth, maxFullness, meatValue, feildOfView, size, maxHungerTimer, maxLifelossTimer, coordinates)
+        { }
         public override bool Feed(Food food)
         {
             ArgumentNullException.ThrowIfNull(food);
-            if (IsAlive && food.Kind == Food.FoodKind.fkGrassy) { 
+            if (IsAlive && food.Kind == Food.FoodKind.fkGrassy)
+            {
                 _fullness = Math.Min(_fullness + food.Value, MaxFullness);
                 return true;
-            // Console.WriteLine($"I was fet ({food.Name}), I am:{_fullness}/{MaxFullness}");
+                // Console.WriteLine($"I was fet ({food.Name}), I am:{_fullness}/{MaxFullness}");
             }
             return false;
         }

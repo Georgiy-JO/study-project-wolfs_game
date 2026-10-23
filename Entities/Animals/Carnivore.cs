@@ -5,13 +5,14 @@ using Wolf_Island.Entities;
 
 namespace Wolf_Island.Entities.Animals
 {
-    internal abstract class Carnivore:Animal
+    internal abstract class Carnivore : Animal
     {
         protected Carnivore(uint maxHealth, uint maxFullness,
                             uint meatValue, uint feildOfView, Size size,
                             uint maxHungerTimer, uint maxLifelossTimer,
-                            (uint x, uint y) coordinates):
-                                base(maxHealth, maxFullness, meatValue, feildOfView, size, maxHungerTimer, maxLifelossTimer, coordinates) { }
+                            (uint x, uint y) coordinates) :
+                                base(maxHealth, maxFullness, meatValue, feildOfView, size, maxHungerTimer, maxLifelossTimer, coordinates)
+        { }
         public override bool Feed(Food food)
         {
             ArgumentNullException.ThrowIfNull(food);
