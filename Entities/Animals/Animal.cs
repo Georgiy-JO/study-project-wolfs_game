@@ -20,7 +20,7 @@ namespace Wolf_Island.Entities.Animals
         protected readonly uint MaxFullness;
         //protected virtual uint MaxMoveDistance { get => 1;}       // not used
         public readonly uint MeatValue;
-        public readonly uint FeildOfView;
+        public readonly uint FieldOfView;
         private readonly uint MaxHungerTimer;
         private readonly uint MaxLifelossTimer;
         protected readonly Size _size;                          // not really used in this game instance (can be fixed)
@@ -47,20 +47,20 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
         /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
         /// <param name="meatValue">how much value will its remains Food:Remains has</param>
-        /// <param name="feildOfView">how far on the field can it see</param>
+        /// <param name="FieldOfView">how far on the field can it see</param>
         /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
         /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
         /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
         /// <param name="coordinates">spawn location</param>
         public Animal(uint maxHealth = 1, uint maxFullness = 1,
-                      uint meatValue = 1, uint feildOfView = 1, Size size = Size.szMedium,
+                      uint meatValue = 1, uint fieldOfView = 1, Size size = Size.szMedium,
                       uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
                        (uint x, uint y) coordinates = default)
         {
             MaxHealth = maxHealth;
             MaxFullness = maxFullness;
             MeatValue = meatValue;
-            FeildOfView = feildOfView;
+            FieldOfView = fieldOfView;
             MaxHungerTimer = maxHungerTimer;
             MaxLifelossTimer = maxLifelossTimer;
             _hungerTimer = MaxHungerTimer;
@@ -76,7 +76,7 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
         /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
         /// <param name="meatValue">how much value will its remains Food:Remains has</param>
-        /// <param name="feildOfView">how far on the field can it see</param>
+        /// <param name="FieldOfView">how far on the field can it see</param>
         /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
         /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
         /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
@@ -85,14 +85,14 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="coordinates">spawn location</param>
         public Animal(uint maxHealth = 1, uint maxFullness = 1,
                       uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
-                      uint meatValue = 1, uint feildOfView = 1, Size size = Size.szMedium,
+                      uint meatValue = 1, uint fieldOfView = 1, Size size = Size.szMedium,
                       uint health = 1, uint fullness = 1,
                        (uint x, uint y) coordinates = default)
         {
             MaxHealth = maxHealth;
             MaxFullness = maxFullness;
             MeatValue = meatValue;
-            FeildOfView = feildOfView;
+            FieldOfView = fieldOfView;
             MaxHungerTimer = maxHungerTimer;
             MaxLifelossTimer = maxLifelossTimer;
             _hungerTimer = MaxHungerTimer;
@@ -135,13 +135,10 @@ namespace Wolf_Island.Entities.Animals
             return IsAlive;
         }
 
+
         public abstract bool Feed(Food food);
         public abstract void Update(Game.Data data);
         protected abstract void Movehandler(Game.Data data);
         protected abstract void Feedhandler(Game.Data data);
-
-
-
-
     }
 }

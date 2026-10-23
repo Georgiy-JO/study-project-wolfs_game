@@ -11,7 +11,7 @@ namespace Wolf_Island.Entities.Animals.Mobs
         //protected override uint MaxFullness { get => 3; }
         //protected override uint MaxMoveDistance { get => 1; }   // not used
         //public override uint MeatValue { get => 2; }
-        //protected override uint FildOfView { get => 1; }
+        //protected override uint FieldOfView { get => 1; }
 
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace Wolf_Island.Entities.Animals.Mobs
         /// maxHealth - how much health it has (health == 0 - death), 
         /// maxFullness - how hungry it can get until it starts loosing health,
         /// meatValue - how much value will its remains Food:Remains has, 
-        /// feildOfView - how far on the field can it see, 
+        /// fieldOfView - how far on the field can it see, 
         /// size:Size.szSmall - size of the animal (important for the life chain - who eats who),
         /// maxHungerTimer - how many moves it can make before becoming hungry, 
         /// maxLifelossTimer - how fast will it lose health if it's hungry, 
@@ -27,7 +27,7 @@ namespace Wolf_Island.Entities.Animals.Mobs
         /// </summary>
         /// <param name="coordinates">spawn location</param>
         public Rabbit((uint x, uint y) coordinates = default) : base(maxHealth: 4, maxFullness: 3,
-                                                                     meatValue: 2, feildOfView: 2, size: Size.szSmall,
+                                                                     meatValue: 2, FieldOfView: 2, size: Size.szSmall,
                                                                      maxHungerTimer: 1, maxLifelossTimer: 1,
                                                                      coordinates)
         { }

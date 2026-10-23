@@ -48,11 +48,11 @@ internal class Game
         private readonly List<Rabbit> _rabbits;
         private readonly List<Grass> _grass;
 
-        public uint Width => _fieldWidth;
-        public uint Height => _fieldHeight;
-        public List<Wolf> Wolfs => _wolfs;
-        public List<Rabbit> Rabbits => _rabbits;
-        public List<Grass> Grass => _grass;
+        public readonly uint Width => _fieldWidth;
+        public readonly uint Height => _fieldHeight;
+        public readonly List<Wolf> Wolfs => _wolfs;
+        public readonly List<Rabbit> Rabbits => _rabbits;
+        public readonly List<Grass> Grass => _grass;
 
         public Data(uint width, uint height, List<Wolf> wolfs, List<Rabbit> rabbits, List<Grass> grass)
         {
@@ -131,11 +131,11 @@ internal class Game
         Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
 
         _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
-        _data.Rabbits.AddRange(CreateAllRabit(countRabbit, positions));
+        _data.Rabbits.AddRange(CreateAllRabbits(countRabbit, positions));
         _data.Grass.AddRange(CreateAllGrass(countGrass, positions));
     }
 
-    protected List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
+    protected static List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
     {
         var positions = new List<(uint x, uint y)>((int)(fieldWidth * fieldHeight));
 
@@ -146,7 +146,7 @@ internal class Game
         return positions;
     }
 
-    protected List<Wolf> CreateAllWolfs(uint countWolfs, Stack<(uint x, uint y)> positions)
+    protected static List<Wolf> CreateAllWolfs(uint countWolfs, Stack<(uint x, uint y)> positions)
     {
         List<Wolf> res = new List<Wolf>();
 
@@ -161,7 +161,7 @@ internal class Game
         return res;
     }
 
-    protected List<Rabbit> CreateAllRabit(uint countRabbit, Stack<(uint x, uint y)> positions)
+    protected static List<Rabbit> CreateAllRabbits(uint countRabbit, Stack<(uint x, uint y)> positions)
     {
         List<Rabbit> res = new List<Rabbit>();
 
@@ -176,7 +176,7 @@ internal class Game
         return res;
     }
 
-    protected List<Grass> CreateAllGrass(uint countGrass, Stack<(uint x, uint y)> positions)
+    protected static List<Grass> CreateAllGrass(uint countGrass, Stack<(uint x, uint y)> positions)
     {
         List<Grass> res = new List<Grass>();
 

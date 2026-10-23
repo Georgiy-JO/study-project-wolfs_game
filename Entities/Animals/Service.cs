@@ -12,8 +12,8 @@ namespace Wolf_Island.Entities.Animals
         {
 
             Dictionary<(long x, long y), int> weightField = new();
-            (long x, long y) beginCoord = ((long)animal.Coord.x - animal.FeildOfView, (long)animal.Coord.y - animal.FeildOfView);
-            (long x, long y) endCoord = ((long)animal.Coord.x + animal.FeildOfView, (long)animal.Coord.y + animal.FeildOfView);
+            (long x, long y) beginCoord = ((long)animal.Coord.x - animal.FieldOfView, (long)animal.Coord.y - animal.FieldOfView);
+            (long x, long y) endCoord = ((long)animal.Coord.x + animal.FieldOfView, (long)animal.Coord.y + animal.FieldOfView);
 
 
             int edgeWeight = -50;           // weight of out of field coordinates
