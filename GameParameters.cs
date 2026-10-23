@@ -6,5 +6,6 @@ namespace Wolf_Island
 {
     internal class GameParameters
     {
+        // redundant?
     }
 }
