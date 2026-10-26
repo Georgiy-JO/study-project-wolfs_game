@@ -3,10 +3,9 @@ using static Wolf_Island.Cell;
 using Wolf_Island.Entities.Animals.Mobs;
 using Wolf_Island.Entities.Objects;
 using Wolf_Island.Entities.Objects.FoodKinds;
+using Wolf_Island.Entities.Animals;
 
 namespace Wolf_Island;
-
-public enum Direction { dNorth, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest }
 
 internal class Game
 {
@@ -44,22 +43,22 @@ internal class Game
     {
         private readonly uint _fieldWidth;
         private readonly uint _fieldHeight;
-        private readonly List<Wolf> _wolfs;
-        private readonly List<Rabbit> _rabbits;
+        private readonly List<Carnivore> _carnivores;
+        private readonly List<Herbivore> _herbivores;
         private readonly List<Food> _food;
 
         public readonly uint Width => _fieldWidth;
         public readonly uint Height => _fieldHeight;
-        public readonly List<Wolf> Wolfs => _wolfs;
-        public readonly List<Rabbit> Rabbits => _rabbits;
+        public readonly List<Carnivore> Carnivores => _carnivores;
+        public readonly List<Herbivore> Herbivores => _herbivores;
         public readonly List<Food> Food => _food;
 
-        public Data(uint width, uint height, List<Wolf> wolfs, List<Rabbit> rabbits, List<Food> food)
+        public Data(uint width, uint height, List<Carnivore> carnivores, List<Herbivore> herbivores, List<Food> food)
         {
             _fieldWidth = width;
             _fieldHeight = height;
-            _wolfs = wolfs;
-            _rabbits = rabbits;
+            _carnivores = carnivores;
+            _herbivores = herbivores;
             _food = food;
         }
     }
@@ -68,19 +67,19 @@ internal class Game
 
     public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5, uint countRabbit = 5, uint countGrass = 10)
     {
-        _data = new Data(fieldWidth, fieldHeight, new List<Wolf>(), new List<Rabbit>(), new List<Food>());
+        _data = new Data(fieldWidth, fieldHeight, new List<Carnivore>(), new List<Herbivore>(), new List<Food>());
 
         InitEntities(countWolfs, countRabbit, countGrass);
     }
 
     public void Tick()
     {
-        foreach (var rabbit in _data.Rabbits)
+        foreach (var rabbit in _data.Herbivores)
         {
             rabbit.Update(_data);
         }
 
-        foreach (var wolf in _data.Wolfs)
+        foreach (var wolf in _data.Carnivores)
         {
             wolf.Update(_data);
         }
@@ -97,13 +96,13 @@ internal class Game
         }
         
 
-        _data.Rabbits.RemoveAll(r =>
+        _data.Herbivores.RemoveAll(r =>
         {
             if (r.IsAlive) return false;
             _data.Food.Add(new Remains(r.Coord, r.MeatValue));
             return true;
         });
-        _data.Wolfs.RemoveAll(r =>
+        _data.Carnivores.RemoveAll(r =>
         {
             if (r.IsAlive) return false;
             _data.Food.Add(new Remains(r.Coord, r.MeatValue));
@@ -124,11 +123,11 @@ internal class Game
         foreach (var g in _data.Food)
             cells[(int)(g.Coord.y * _data.Width + g.Coord.x)] = new Cell((uint)g.Coord.x, (uint)g.Coord.y, CellType.Grass);
 
-        foreach (var r in _data.Rabbits)
+        foreach (var r in _data.Herbivores)
             if (r.IsAlive)
                 cells[(int)(r.Coord.y * _data.Width + r.Coord.x)] = new Cell((uint)r.Coord.x, (uint)r.Coord.y, CellType.Rabbit);
 
-        foreach (var w in _data.Wolfs)
+        foreach (var w in _data.Carnivores)
             if (w.IsAlive)
                 cells[(int)(w.Coord.y * _data.Width + w.Coord.x)] = new Cell((uint)w.Coord.x, (uint)w.Coord.y, CellType.Wolf);
 
@@ -140,8 +139,8 @@ internal class Game
         List<(uint x, uint y)> allPositions = CreatePositions(_data.Width, _data.Height);
         Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
 
-        _data.Wolfs.AddRange(CreateAllWolfs(countWolfs, positions));
-        _data.Rabbits.AddRange(CreateAllRabbits(countRabbit, positions));
+        _data.Carnivores.AddRange(CreateAllWolfs(countWolfs, positions));
+        _data.Herbivores.AddRange(CreateAllRabbits(countRabbit, positions));
         _data.Food.AddRange(CreateAllGrass(countGrass, positions));
     }
 

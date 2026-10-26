@@ -22,10 +22,10 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
                 bool flag = true;
 
                 if (coords.y < 0 || coords.x < 0 || coords.y >= data.Height || coords.x >= data.Width) flag = false;
-                for (int i = 0; flag && i < data.Rabbits.Count; i++)
-                    if (coords == data.Rabbits[i].Coord) flag = false;
-                for (int i = 0; flag && i < data.Wolfs.Count; i++)
-                    if (coords == data.Wolfs[i].Coord) flag = false;
+                for (int i = 0; flag && i < data.Herbivores.Count; i++)
+                    if (coords == data.Herbivores[i].Coord) flag = false;
+                for (int i = 0; flag && i < data.Carnivores.Count; i++)
+                    if (coords == data.Carnivores[i].Coord) flag = false;
                 for (int i = 0; flag && i < data.Food.Count; i++)
                     if (coords == data.Food[i].Coord) flag = false;
 

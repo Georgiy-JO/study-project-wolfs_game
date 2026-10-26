@@ -31,7 +31,7 @@ namespace Wolf_Island.Entities.Animals
                     else
                     {
                         weightField[(k, j)] = 0;
-                        if (data.Wolfs.Exists(x => x?.Coord == (k, j) && x is Carnivore && x.Size > animal.Size))          // it shouldn't be called Wolfs though
+                        if (data.Carnivores.Exists(x => x?.Coord == (k, j) && x is Carnivore && x.Size > animal.Size))          // it shouldn't be called Wolfs though
                             enemies.Add((k, j));
                         if (data.Food.Exists(x => x?.Coord == (k, j) &&
                                     ((animal is Herbivore && x is Grassy) ||
