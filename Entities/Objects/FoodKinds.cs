@@ -7,7 +7,7 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
     internal class Grass : Grassy
     {
         public Grass() : base(2, (0, 0)) { }
-        public Grass((uint x, uint y) coords) : base(2,  (coords.x, coords.y)) { }
+        public Grass((uint x, uint y) coords) : base(2, (coords.x, coords.y)) { }
         public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
         {
             if (newData == null) return;
@@ -41,7 +41,7 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
 
     internal class Remains : Meaty
     {
-        public Remains(uint fValue = 0) : base(fValue,  (0, 0)) { }
-        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue,  (coords.x, coords.y)) { }
+        public Remains(uint fValue = 0) : base(fValue, (0, 0)) { }
+        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue, (coords.x, coords.y)) { }
     }
 }

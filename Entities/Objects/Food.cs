@@ -19,7 +19,7 @@ namespace Wolf_Island.Entities.Objects
         public virtual void Update(Game.Data data, List<(uint x, uint y)>? newData) { }
     }
 
-    internal abstract class Grassy : Food  
+    internal abstract class Grassy : Food
     {
         public Grassy(uint fValue, (uint x, uint y) coord) : base(fValue, coord) { }
     }

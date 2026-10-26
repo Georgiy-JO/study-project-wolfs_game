@@ -1,6 +1,5 @@
 using Microsoft.VisualBasic;
 using static Wolf_Island.Cell;
-using Wolf_Island.Entities.Animals.Mobs;
 using Wolf_Island.Entities.Objects;
 using Wolf_Island.Entities.Objects.FoodKinds;
 using Wolf_Island.Entities.Animals;
@@ -74,17 +73,17 @@ internal class Game
 
     public void Tick()
     {
-        foreach (var rabbit in _data.Herbivores)
+        foreach (var herb in _data.Herbivores)
         {
-            rabbit.Update(_data);
+            if (herb.IsAlive) herb.Update(_data);
         }
 
-        foreach (var wolf in _data.Carnivores)
+        foreach (var corn in _data.Carnivores)
         {
-            wolf.Update(_data);
+            if (corn.IsAlive) corn.Update(_data);
         }
 
-        
+
         List<(uint x, uint y)> newGrass = new List<(uint x, uint y)>();
         foreach (var grass in _data.Food.OfType<Grass>())       // the check of type is not really needed here, because Remains has update too
         {
@@ -94,7 +93,7 @@ internal class Game
         {
             _data.Food.Add(new Grass(ng));
         }
-        
+
 
         _data.Herbivores.RemoveAll(r =>
         {

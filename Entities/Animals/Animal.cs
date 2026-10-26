@@ -135,9 +135,50 @@ namespace Wolf_Island.Entities.Animals
 
 
         public abstract bool Feed(Food food);
-        public abstract bool IsFood(Food food);
-        public abstract void Update(Game.Data data);
-        protected abstract void Movehandler(Game.Data data);
-        protected abstract void Feedhandler(Game.Data data);
+        public abstract bool Feed(Animal food);
+        public abstract bool CanEat(Food food);
+        public abstract bool CanEat(Animal food);
+        public void Update(Game.Data data)
+        {
+            Movehandler(data);              // handle moving
+            Feedhandler(data);              // handle feeding
+            Status();                       // hanger and life handle
+        }
+        protected void Movehandler(Game.Data data)
+        {
+            var weightField = Service.WeightField(data, this);
+            var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
+            ((long x, long y), int weight) theMove = (Coord, -(int)Service.weightDelta);       // issue#Movehandler_0: if the field size comes close to max int and FieldOfView comes close to global we are fucked
+
+            foreach (var possibleMove in possibleMoves)
+            {
+                if (theMove.weight < weightField[possibleMove])       // (possibleMove.x >= 0 && possibleMove.y >= 0 && possibleMove.x < data.Width && possibleMove.y < data.Height)
+                    theMove = (possibleMove, (int)weightField[possibleMove]);                   // issue#Movehandler_0
+            }
+            SetCoord((uint)theMove.Item1.x, (uint)theMove.Item1.y);
+        }
+        protected void Feedhandler(Game.Data data)
+        {
+            var FoodThere = data.Food.Find(x => x.Coord == Coord);
+            if (this.Feed(FoodThere))
+            {
+                data.Food.Remove(FoodThere);
+                return;
+            }
+
+            var AnimalHerbivoreFoodThere = data.Herbivores.Find(x => x.Coord == Coord);
+            if (this.Feed(AnimalHerbivoreFoodThere))
+            {
+                AnimalHerbivoreFoodThere.Kill();
+                return;
+            }
+
+            var AnimalCarnivoreFoodThere = data.Carnivores.Find(x => x.Coord == Coord);
+            if (this.Feed(AnimalCarnivoreFoodThere))
+            {
+                AnimalCarnivoreFoodThere.Kill();
+                return;
+            }
+        }
     }
 }

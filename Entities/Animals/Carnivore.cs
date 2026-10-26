@@ -15,18 +15,32 @@ namespace Wolf_Island.Entities.Animals
         { }
         public override bool Feed(Food food)
         {
-            ArgumentNullException.ThrowIfNull(food);
-            if (IsAlive && food is Meaty)
+            if (IsAlive && CanEat(food) && !IsFull)
             {
                 _fullness = Math.Min(_fullness + food.Value, MaxFullness);
                 return true;
             }
             return false;
         }
-        public override bool IsFood(Food food)
+        public override bool Feed(Animal food)
+        {
+            if (IsAlive && CanEat(food))
+            {
+                if (!IsFull)
+                    _fullness = Math.Min(_fullness + food.MeatValue, MaxFullness);
+                return true;
+            }
+            return false;
+        }
+        public override bool CanEat(Food food)
         {
             ArgumentNullException.ThrowIfNull(food);
             return food is Meaty;
+        }
+        public override bool CanEat(Animal food)
+        {
+            ArgumentNullException.ThrowIfNull(food);
+            return food.Size < this.Size;
         }
     }
 }
