@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection.Metadata;
 using System.Text;
-using Wolf_Island.Entities;
-using WolfGame;
+using Wolf_Island.Entities.Objects;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -136,6 +135,7 @@ namespace Wolf_Island.Entities.Animals
 
 
         public abstract bool Feed(Food food);
+        public abstract bool IsFood(Food food);
         public abstract void Update(Game.Data data);
         protected abstract void Movehandler(Game.Data data);
         protected abstract void Feedhandler(Game.Data data);

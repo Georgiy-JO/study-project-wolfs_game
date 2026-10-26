@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using WolfGame;
 using static Wolf_Island.Cell;
 
 namespace Wolf_Island

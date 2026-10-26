@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WolfGame;
-using Wolf_Island.Entities.Animals.Mobs;
+using Wolf_Island.Entities.Objects;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -35,8 +34,8 @@ namespace Wolf_Island.Entities.Animals
                         if (data.Wolfs.Exists(x => x?.Coord == (k, j) && x is Carnivore && x.Size > animal.Size))          // it shouldn't be called Wolfs though
                             enemies.Add((k, j));
                         if (data.Food.Exists(x => x?.Coord == (k, j) &&
-                                    ((animal is Herbivore && x.Kind == Food.FoodKind.fkGrassy) ||
-                                     (animal is Carnivore && x.Kind == Food.FoodKind.fkMeaty))))
+                                    ((animal is Herbivore && x is Grassy) ||
+                                     (animal is Carnivore && x is Meaty))))
                             food.Add((k, j));
                     }
                 }

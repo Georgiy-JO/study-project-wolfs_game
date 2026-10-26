@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WolfGame;
 
 namespace Wolf_Island.Entities.Animals.Mobs
 {
     internal class Rabbit : Herbivore
     {
-        //protected override uint MaxHealth { get => 4; }
-        //protected override uint MaxFullness { get => 3; }
-        //protected override uint MaxMoveDistance { get => 1; }   // not used
-        //public override uint MeatValue { get => 2; }
-        //protected override uint FieldOfView { get => 1; }
-
-
         /// <summary>
         /// Creating a rabbit.
         /// maxHealth - how much health it has (health == 0 - death), 
@@ -31,7 +23,6 @@ namespace Wolf_Island.Entities.Animals.Mobs
                                                                      maxHungerTimer: 1, maxLifelossTimer: 1,
                                                                      coordinates)
         { }
-
 
         public override void Update(Game.Data data)
         {

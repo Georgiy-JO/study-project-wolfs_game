@@ -1,40 +1,13 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
-using WolfGame;
 
-namespace Wolf_Island.Entities
+namespace Wolf_Island.Entities.Objects.FoodKinds
 {
-    internal class Food
+    internal class Grass : Grassy
     {
-        public enum FoodKind
-        {
-            fkMeaty,
-            fkGrassy,
-            fkNone
-        }
-        private (uint x, uint y) _coordinates;
-        //public string Name { get; }
-        public uint Value { get; }
-        public FoodKind Kind { get; }
-        public (uint x, uint y) Coord => _coordinates;
-
-
-        public Food(uint fValue = 0, FoodKind kind = FoodKind.fkNone, (uint x, uint y) coord = default)
-        {
-            //Name= name;
-            Value = fValue;
-            Kind = kind;
-            _coordinates = coord;
-        }
-        public virtual void Update(Game.Data data, List<(uint x, uint y)>? newData) { }
-    }
-
-    internal class Grass : Food
-    {
-        public Grass() : base(2, FoodKind.fkGrassy, (0, 0)) { }
-        public Grass((uint x, uint y) coords) : base(2, FoodKind.fkGrassy, (coords.x, coords.y)) { }
+        public Grass() : base(2, (0, 0)) { }
+        public Grass((uint x, uint y) coords) : base(2,  (coords.x, coords.y)) { }
         public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
         {
             if (newData == null) return;
@@ -66,9 +39,9 @@ namespace Wolf_Island.Entities
         }
     }
 
-    internal class Remains : Food
+    internal class Remains : Meaty
     {
-        public Remains(uint fValue = 0) : base(fValue, FoodKind.fkMeaty, (0, 0)) { }
-        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue, FoodKind.fkMeaty, (coords.x, coords.y)) { }
+        public Remains(uint fValue = 0) : base(fValue,  (0, 0)) { }
+        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue,  (coords.x, coords.y)) { }
     }
 }

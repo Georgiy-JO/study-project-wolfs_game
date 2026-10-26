@@ -1,10 +1,10 @@
 using Microsoft.VisualBasic;
-using Wolf_Island;
-using Wolf_Island.Entities;
 using static Wolf_Island.Cell;
 using Wolf_Island.Entities.Animals.Mobs;
+using Wolf_Island.Entities.Objects;
+using Wolf_Island.Entities.Objects.FoodKinds;
 
-namespace WolfGame;
+namespace Wolf_Island;
 
 public enum Direction { dNorth, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest }
 

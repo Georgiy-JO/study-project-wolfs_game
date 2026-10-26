@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Wolf_Island.Entities;
+using Wolf_Island.Entities.Objects;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -16,12 +16,17 @@ namespace Wolf_Island.Entities.Animals
         public override bool Feed(Food food)
         {
             ArgumentNullException.ThrowIfNull(food);
-            if (IsAlive && food.Kind == Food.FoodKind.fkMeaty)
+            if (IsAlive && food is Meaty)
             {
                 _fullness = Math.Min(_fullness + food.Value, MaxFullness);
                 return true;
             }
             return false;
+        }
+        public override bool IsFood(Food food)
+        {
+            ArgumentNullException.ThrowIfNull(food);
+            return food is Meaty;
         }
     }
 }

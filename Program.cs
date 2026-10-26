@@ -1,5 +1,3 @@
-using WolfGame;
-
 namespace Wolf_Island
 {
     internal class Program
