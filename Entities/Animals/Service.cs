@@ -60,14 +60,18 @@ namespace Wolf_Island.Entities.Animals
                         else
                         {
                             weightField[(k, j)] = 0;
-                            if (data.Carnivores.Exists(x => x?.Coord == (k, j) && x.CanEat(animal)))
-                                enemies.Add((k, j));
                             if (data.Food.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
                                 food.Add((k, j));
-                            if (data.Carnivores.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
+                            if (data.Animals.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
                                 food.Add((k, j));
-                            if (data.Herbivores.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
-                                food.Add((k, j));
+                            if (data.Animals.Exists(x => x?.Coord == (k, j) && x.CanEat(animal)))
+                                enemies.Add((k, j));
+                            //if (data.Carnivores.Exists(x => x?.Coord == (k, j) && x.CanEat(animal)))
+                            //    enemies.Add((k, j));
+                            //if (data.Carnivores.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
+                            //    food.Add((k, j));
+                            //if (data.Herbivores.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
+                            //    food.Add((k, j));
                         }
                     }
                 }
@@ -104,6 +108,21 @@ namespace Wolf_Island.Entities.Animals
 
                 return weightField;
             }
+        }
+
+        internal static class ConstantsLoader
+        {
+            static public AnimalData Rabbit()
+            {
+                return new AnimalData(MaxHealth: 4, MaxFullness: 3, MeatValue: 2, FieldOfView: 2, Size: Sizes.szSmall, HungerTimer: 1, LifelossTimer: 1);
+
+            }
+            static public AnimalData Wolf()
+            {
+                return new AnimalData(MaxHealth: 6, MaxFullness: 6, MeatValue: 5, FieldOfView: 3, Size: Sizes.szMedium, HungerTimer: 2, LifelossTimer: 1);
+
+            }
+            
         }
     }
 }

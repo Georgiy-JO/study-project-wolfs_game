@@ -31,7 +31,7 @@ namespace Wolf_Island
 
     public struct Cell
     {
-        public enum CellType { Empty, Grass, Rabbit, Wolf }
+        public enum CellType { Empty, Grass, Rabbit, Wolf, Remains }
 
         private uint _x, _y;
         private CellType _type;

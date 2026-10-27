@@ -42,22 +42,19 @@ internal class Game
     {
         private readonly uint _fieldWidth;
         private readonly uint _fieldHeight;
-        private readonly List<Carnivore> _carnivores;
-        private readonly List<Herbivore> _herbivores;
+        private readonly List<Animal> _animals;
         private readonly List<Food> _food;
 
         public readonly uint Width => _fieldWidth;
         public readonly uint Height => _fieldHeight;
-        public readonly List<Carnivore> Carnivores => _carnivores;
-        public readonly List<Herbivore> Herbivores => _herbivores;
+        public readonly List<Animal> Animals => _animals;
         public readonly List<Food> Food => _food;
 
-        public Data(uint width, uint height, List<Carnivore> carnivores, List<Herbivore> herbivores, List<Food> food)
+        public Data(uint width, uint height, List<Animal> animals, List<Food> food)
         {
             _fieldWidth = width;
             _fieldHeight = height;
-            _carnivores = carnivores;
-            _herbivores = herbivores;
+            _animals = animals;
             _food = food;
         }
     }
@@ -66,23 +63,22 @@ internal class Game
 
     public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5, uint countRabbit = 5, uint countGrass = 10)
     {
-        _data = new Data(fieldWidth, fieldHeight, new List<Carnivore>(), new List<Herbivore>(), new List<Food>());
+        _data = new Data(fieldWidth, fieldHeight, new List<Animal>(), new List<Food>());
 
         InitEntities(countWolfs, countRabbit, countGrass);
     }
 
     public void Tick()
     {
-        foreach (var herb in _data.Herbivores)
+        foreach (var anim in _data.Animals)
         {
-            if (herb.IsAlive) herb.Update(_data);
+            if (anim.IsAlive) anim.Update(_data);
         }
 
-        foreach (var corn in _data.Carnivores)
-        {
-            if (corn.IsAlive) corn.Update(_data);
-        }
-
+        //foreach (var corn in _data.Carnivores)
+        //{
+        //    if (corn.IsAlive) corn.Update(_data);
+        //}
 
         List<(uint x, uint y)> newGrass = new List<(uint x, uint y)>();
         foreach (var grass in _data.Food.OfType<Grass>())       // the check of type is not really needed here, because Remains has update too
@@ -95,18 +91,18 @@ internal class Game
         }
 
 
-        _data.Herbivores.RemoveAll(r =>
+        _data.Animals.RemoveAll(a =>
         {
-            if (r.IsAlive) return false;
-            _data.Food.Add(new Remains(r.Coord, r.MeatValue));
+            if (a.IsAlive) return false;
+            _data.Food.Add(new Remains(a.Coord, a.MeatValue));
             return true;
         });
-        _data.Carnivores.RemoveAll(r =>
-        {
-            if (r.IsAlive) return false;
-            _data.Food.Add(new Remains(r.Coord, r.MeatValue));
-            return true;
-        });
+        //_data.Carnivores.RemoveAll(r =>
+        //{
+        //    if (r.IsAlive) return false;
+        //    _data.Food.Add(new Remains(r.Coord, r.MeatValue));
+        //    return true;
+        //});
 
         //TODO: добавить рождение новых животных (if you feel lucky)
     }
@@ -119,16 +115,16 @@ internal class Game
             for (uint x = 0; x < _data.Width; x++)
                 cells.Add(new Cell(x, y, CellType.Empty));
 
-        foreach (var g in _data.Food)
-            cells[(int)(g.Coord.y * _data.Width + g.Coord.x)] = new Cell((uint)g.Coord.x, (uint)g.Coord.y, CellType.Grass);
+        foreach (var f in _data.Food)
+            cells[(int)(f.Coord.y * _data.Width + f.Coord.x)] = new Cell((uint)f.Coord.x, (uint)f.Coord.y, (f is Grass)?CellType.Grass:CellType.Remains);
 
-        foreach (var r in _data.Herbivores)
-            if (r.IsAlive)
-                cells[(int)(r.Coord.y * _data.Width + r.Coord.x)] = new Cell((uint)r.Coord.x, (uint)r.Coord.y, CellType.Rabbit);
+        foreach (var a in _data.Animals)
+            if (a.IsAlive)
+                cells[(int)(a.Coord.y * _data.Width + a.Coord.x)] = new Cell((uint)a.Coord.x, (uint)a.Coord.y, (a is Rabbit)?CellType.Rabbit:CellType.Wolf);
 
-        foreach (var w in _data.Carnivores)
-            if (w.IsAlive)
-                cells[(int)(w.Coord.y * _data.Width + w.Coord.x)] = new Cell((uint)w.Coord.x, (uint)w.Coord.y, CellType.Wolf);
+        //foreach (var w in _data.Carnivores)
+        //    if (w.IsAlive)
+        //        cells[(int)(w.Coord.y * _data.Width + w.Coord.x)] = new Cell((uint)w.Coord.x, (uint)w.Coord.y, CellType.Wolf);
 
         return new GameSnapshot(_data.Width, _data.Height, cells);
     }
@@ -138,8 +134,8 @@ internal class Game
         List<(uint x, uint y)> allPositions = CreatePositions(_data.Width, _data.Height);
         Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
 
-        _data.Carnivores.AddRange(CreateAllWolfs(countWolfs, positions));
-        _data.Herbivores.AddRange(CreateAllRabbits(countRabbit, positions));
+        _data.Animals.AddRange(CreateAllWolfs(countWolfs, positions));
+        _data.Animals.AddRange(CreateAllRabbits(countRabbit, positions));
         _data.Food.AddRange(CreateAllGrass(countGrass, positions));
     }
 
