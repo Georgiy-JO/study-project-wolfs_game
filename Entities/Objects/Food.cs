@@ -7,7 +7,7 @@ namespace Wolf_Island.Entities.Objects
 {
     internal abstract class Food
     {
-        public uint Value { get; }
+        public uint Value { get; }          // Can be made changeable - that would allow to make animal eat part of food and allow it to restore
         public (uint x, uint y) Coord { get; }
 
 

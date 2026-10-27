@@ -94,7 +94,7 @@ internal class Game
         _data.Animals.RemoveAll(a =>
         {
             if (a.IsAlive) return false;
-            _data.Food.Add(new Remains(a.Coord, a.MeatValue));
+            if (a.MeatValue != 0) _data.Food.Add(new Remains(a.Coord, a.MeatValue));
             return true;
         });
         //_data.Carnivores.RemoveAll(r =>
@@ -116,11 +116,11 @@ internal class Game
                 cells.Add(new Cell(x, y, CellType.Empty));
 
         foreach (var f in _data.Food)
-            cells[(int)(f.Coord.y * _data.Width + f.Coord.x)] = new Cell((uint)f.Coord.x, (uint)f.Coord.y, (f is Grass)?CellType.Grass:CellType.Remains);
+            cells[(int)(f.Coord.y * _data.Width + f.Coord.x)] = new Cell((uint)f.Coord.x, (uint)f.Coord.y, (f is Grass) ? CellType.Grass : CellType.Remains);
 
         foreach (var a in _data.Animals)
             if (a.IsAlive)
-                cells[(int)(a.Coord.y * _data.Width + a.Coord.x)] = new Cell((uint)a.Coord.x, (uint)a.Coord.y, (a is Rabbit)?CellType.Rabbit:CellType.Wolf);
+                cells[(int)(a.Coord.y * _data.Width + a.Coord.x)] = new Cell((uint)a.Coord.x, (uint)a.Coord.y, (a is Rabbit) ? CellType.Rabbit : CellType.Wolf);
 
         //foreach (var w in _data.Carnivores)
         //    if (w.IsAlive)

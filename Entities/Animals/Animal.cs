@@ -19,8 +19,8 @@ namespace Wolf_Island.Entities.Animals
         protected uint MaxHealth { get; }
         protected uint MaxFullness { get; }
         //protected virtual uint MaxMoveDistance { get => 1;}       // not used
-        public uint MeatValue { get; }
         public uint FieldOfView { get; }
+        public uint MeatValue { private set; get; }
         private readonly uint MaxHungerTimer;
         private readonly uint MaxLifelossTimer;
         public Sizes Size { get; }
@@ -76,7 +76,7 @@ namespace Wolf_Island.Entities.Animals
             MeatValue = dat.MeatValue;
             FieldOfView = dat.FieldOfView;
             MaxHungerTimer = dat.HungerTimer;
-            MaxLifelossTimer = dat.LifelossTimer; 
+            MaxLifelossTimer = dat.LifelossTimer;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = health;
@@ -146,23 +146,24 @@ namespace Wolf_Island.Entities.Animals
             var FoodThere = data.Food.Find(x => x.Coord == Coord);
             if (this.Feed(FoodThere))
             {
-                data.Food.Remove(FoodThere);
+                data.Food.Remove(FoodThere);                    // Can avoid removing grass here if we add an ability to change grass's value 
                 return;
             }
 
-            var AnimalHerbivoreFoodThere = data.Herbivores.Find(x => x.Coord == Coord);
-            if (this.Feed(AnimalHerbivoreFoodThere))
+            var AnimalFoodThere = data.Animals.Find(x => x.Coord == Coord);
+            if (this.Feed(AnimalFoodThere))
             {
-                AnimalHerbivoreFoodThere.Kill();
+                AnimalFoodThere.Kill();
+                AnimalFoodThere.MeatValue = 0;
                 return;
             }
 
-            var AnimalCarnivoreFoodThere = data.Carnivores.Find(x => x.Coord == Coord);
-            if (this.Feed(AnimalCarnivoreFoodThere))
-            {
-                AnimalCarnivoreFoodThere.Kill();
-                return;
-            }
+            //var AnimalCarnivoreFoodThere = data.Carnivores.Find(x => x.Coord == Coord);
+            //if (this.Feed(AnimalCarnivoreFoodThere))
+            //{
+            //    AnimalCarnivoreFoodThere.Kill();
+            //    return;
+            //}
         }
     }
 }

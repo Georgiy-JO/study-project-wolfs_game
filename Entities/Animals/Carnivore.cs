@@ -21,10 +21,9 @@ namespace Wolf_Island.Entities.Animals
         }
         public override bool Feed(Animal food)
         {
-            if (IsAlive && CanEat(food))
+            if (IsAlive && CanEat(food) && !IsFull)
             {
-                if (!IsFull)
-                    _fullness = Math.Min(_fullness + food.MeatValue, MaxFullness);
+                _fullness = Math.Min(_fullness + food.MeatValue, MaxFullness);
                 return true;
             }
             return false;

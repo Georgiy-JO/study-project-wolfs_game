@@ -13,5 +13,5 @@
 
 
 
-объединить в 1 list всех животных 
-remains logic
+1. объединить в 1 list всех животных       - done
+2. remains logic                           - done
