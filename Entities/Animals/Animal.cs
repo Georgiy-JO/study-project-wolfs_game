@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Reflection.Metadata;
 using System.Text;
 using Wolf_Island.Entities.Objects;
+using Wolf_Island.Entities.Animals.Service;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -146,9 +147,9 @@ namespace Wolf_Island.Entities.Animals
         }
         protected void Movehandler(Game.Data data)
         {
-            var weightField = Service.WeightField(data, this);
+            var weightField = WeightField.CreateWeightField(data, this);
             var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
-            ((long x, long y), int weight) theMove = (Coord, -(int)Service.weightDelta);       // issue#Movehandler_0: if the field size comes close to max int and FieldOfView comes close to global we are fucked
+            ((long x, long y), int weight) theMove = (Coord, -(int)WeightField.weightDelta);       // issue#Movehandler_0: if the field size comes close to max int and FieldOfView comes close to global we are fucked
 
             foreach (var possibleMove in possibleMoves)
             {
