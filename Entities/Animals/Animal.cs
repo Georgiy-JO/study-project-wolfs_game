@@ -43,62 +43,45 @@ namespace Wolf_Island.Entities.Animals
         /// <summary>
         /// An Animal constructor.
         /// </summary>
-        /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
-        /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
-        /// <param name="meatValue">how much value will its remains Food:Remains has</param>
-        /// <param name="FieldOfView">how far on the field can it see</param>
-        /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
-        /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
-        /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
-        /// <param name="coordinates">spawn location</param>
-        public Animal(uint maxHealth = 1, uint maxFullness = 1,
-                      uint meatValue = 1, uint fieldOfView = 1, Sizes size = Sizes.szMedium,
-                      uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
-                       (uint x, uint y) coordinates = default)
+        /// <param name="dat">Set constants and other animal data.</param>
+        /// <param name="coordinates">Spawn location.</param>
+        public Animal(AnimalData dat, (uint x, uint y) coordinates = default)
         {
-            MaxHealth = maxHealth;
-            MaxFullness = maxFullness;
-            MeatValue = meatValue;
-            FieldOfView = fieldOfView;
-            MaxHungerTimer = maxHungerTimer;
-            MaxLifelossTimer = maxLifelossTimer;
+            MaxHealth = dat.MaxHealth;
+            MaxFullness = dat.MaxFullness;
+            MeatValue = dat.MeatValue;
+            FieldOfView = dat.FieldOfView;
+            MaxHungerTimer = dat.HungerTimer;
+            MaxLifelossTimer = dat.LifelossTimer;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = MaxHealth;
             _fullness = MaxFullness;
-            Size = size;
+            Size = dat.Size;
             _coordinates = coordinates;
         }
         /// <summary>
         /// An Animal constructor.
         /// </summary>
-        /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
-        /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
-        /// <param name="meatValue">how much value will its remains Food:Remains has</param>
-        /// <param name="FieldOfView">how far on the field can it see</param>
-        /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
-        /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
-        /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
-        /// <param name="health">how much health it has at the moment of the spawn</param>
-        /// <param name="fullness">how full it is at the moment of the spawn</param>
-        /// <param name="coordinates">spawn location</param>
-        public Animal(uint maxHealth = 1, uint maxFullness = 1,
-                      uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
-                      uint meatValue = 1, uint fieldOfView = 1, Sizes size = Sizes.szMedium,
+        /// <param name="dat">Set constants and other animal data.</param>
+        /// <param name="health">How much health it has at the moment of the spawn.</param>
+        /// <param name="fullness">How full it is at the moment of the spawn.</param>
+        /// <param name="coordinates">Spawn location.</param>
+        public Animal(AnimalData dat,
                       uint health = 1, uint fullness = 1,
                        (uint x, uint y) coordinates = default)
         {
-            MaxHealth = maxHealth;
-            MaxFullness = maxFullness;
-            MeatValue = meatValue;
-            FieldOfView = fieldOfView;
-            MaxHungerTimer = maxHungerTimer;
-            MaxLifelossTimer = maxLifelossTimer;
+            MaxHealth = dat.MaxHealth;
+            MaxFullness = dat.MaxFullness;
+            MeatValue = dat.MeatValue;
+            FieldOfView = dat.FieldOfView;
+            MaxHungerTimer = dat.HungerTimer;
+            MaxLifelossTimer = dat.LifelossTimer; 
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = health;
             _fullness = fullness;
-            Size = size;
+            Size = dat.Size;
             _coordinates = coordinates;
         }
 
@@ -139,13 +122,13 @@ namespace Wolf_Island.Entities.Animals
         public abstract bool Feed(Animal food);
         public abstract bool CanEat(Food food);
         public abstract bool CanEat(Animal food);
-        public void Update(Game.Data data)
+        public virtual void Update(Game.Data data)
         {
             Movehandler(data);              // handle moving
             Feedhandler(data);              // handle feeding
             Status();                       // hanger and life handle
         }
-        protected void Movehandler(Game.Data data)
+        protected virtual void Movehandler(Game.Data data)
         {
             var weightField = WeightField.CreateWeightField(data, this);
             var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
@@ -158,7 +141,7 @@ namespace Wolf_Island.Entities.Animals
             }
             SetCoord((uint)theMove.Item1.x, (uint)theMove.Item1.y);
         }
-        protected void Feedhandler(Game.Data data)
+        protected virtual void Feedhandler(Game.Data data)
         {
             var FoodThere = data.Food.Find(x => x.Coord == Coord);
             if (this.Feed(FoodThere))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Wolf_Island.Entities.Animals.Service;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -23,6 +24,7 @@ namespace Wolf_Island.Entities.Animals
                                                                      maxHungerTimer: 1, maxLifelossTimer: 1,
                                                                      coordinates)
         { }
+
     }
     internal class Wolf : Carnivore
     {

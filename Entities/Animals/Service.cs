@@ -11,29 +11,17 @@ namespace Wolf_Island.Entities.Animals
 
     namespace Service
     {
-        internal struct AnimalData      //notdone
-        {
-            public uint maxHealth;
-            public uint maxFullness;
-            public uint meatValue;
-            public uint fieldOfView;
-            public Sizes size;
-            public uint maxHungerTimer;
-            public uint maxLifelossTimer;
-
-            AnimalData(uint mHealth = 1, uint mFullness = 1,
-                      uint meatVal = 1, uint foV = 1, Sizes sz = Sizes.szMedium,
-                      uint hungerTimer = 2, uint lifelossTimer = 2)
-            {
-                maxHealth = mHealth;
-                maxFullness = mFullness;
-                meatValue = meatVal;
-                fieldOfView = foV;
-                size = sz;
-                maxHungerTimer = hungerTimer;
-            }
-
-        }
+        /// <summary>
+        /// An Animal constructor.
+        /// </summary>
+        /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
+        /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
+        /// <param name="meatValue">how much value will its remains Food:Remains has</param>
+        /// <param name="fieldOfView">how far on the field can it see</param>
+        /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
+        /// <param name="hungerTimer">how many moves it can make before becoming hungry</param>
+        /// <param name="lifelossTimer">how fast will it lose health if it's hungry</param>
+        record struct AnimalData(uint MaxHealth = 1, uint MaxFullness = 1, uint MeatValue = 1, uint FieldOfView = 1, Sizes Size = Sizes.szMedium, uint HungerTimer = 2, uint LifelossTimer = 2);
 
         internal static class WeightField
         {
@@ -77,6 +65,8 @@ namespace Wolf_Island.Entities.Animals
                             if (data.Food.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
                                 food.Add((k, j));
                             if (data.Carnivores.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
+                                food.Add((k, j));
+                            if (data.Herbivores.Exists(x => x?.Coord == (k, j) && animal.CanEat(x)))
                                 food.Add((k, j));
                         }
                     }
