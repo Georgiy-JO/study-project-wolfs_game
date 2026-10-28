@@ -3,35 +3,39 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Wolf_Island.Entities.Animals;
+using Wolf_Island.Entities.Objects;
 
 namespace Wolf_Island
 {
-    public interface IRenderer
+    internal interface IRenderer
     {
         void Render(GameSnapshot snapshot);
     }
 
-    public class GameSnapshot
+    internal sealed class GameSnapshot
     {
-        private uint _width;
-        private uint _height;
-        private ICollection<Cell> _cells = new List<Cell>();
+        public uint Width { get; }
+        public uint Height { get; }
+        public IReadOnlyList<Animal> Animals { get; }
+        public IReadOnlyList<Food> Food { get; }
 
-        public uint Width => _width;
-        public uint Height => _height;
-        public IEnumerable<Cell> Cells => _cells;
-
-        public GameSnapshot(uint width, uint height, ICollection<Cell> cells)
+        public GameSnapshot(
+            uint width,
+            uint height,
+            IReadOnlyList<Animal> animals,
+            IReadOnlyList<Food> food)
         {
-            _width = width;
-            _height = height;
-            _cells = cells;
+            Width = width;
+            Height = height;
+            Animals = animals;
+            Food = food;
         }
     }
 
     public struct Cell
     {
-        public enum CellType { Empty, Grass, Rabbit, Wolf }
+        public enum CellType { Empty, Grass, Rabbit, Wolf, Remains }
 
         private uint _x, _y;
         private CellType _type;
