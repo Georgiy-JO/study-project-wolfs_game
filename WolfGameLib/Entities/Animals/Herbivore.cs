@@ -6,7 +6,7 @@ using Wolf_Island.Entities.Objects;
 
 namespace Wolf_Island.Entities.Animals
 {
-    internal abstract class Herbivore : Animal
+    public abstract class Herbivore : Animal
     {
         protected Herbivore(AnimalData dat, (uint x, uint y) coordinates) : base(dat, coordinates)
         { }

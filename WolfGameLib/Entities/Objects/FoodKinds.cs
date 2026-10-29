@@ -5,7 +5,7 @@ using Wolf_Island.Extensions;
 
 namespace Wolf_Island.Entities.Objects.FoodKinds
 {
-    internal class Grass : Grassy
+    public class Grass : Grassy
     {
         public Grass() : base(fValue:2, changeTimer: 4, (0, 0)) { }
         public Grass((uint x, uint y) coords) : base(2, changeTimer: 4, (coords.x, coords.y)) { }
@@ -49,7 +49,7 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
         }
     }
 
-    internal class Remains : Meaty
+    public class Remains : Meaty
     {
         public Remains(uint fValue = 0) : base(fValue, changeTimer: 5, (0, 0)) { }
         public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue, changeTimer: 5, (coords.x, coords.y)) { }

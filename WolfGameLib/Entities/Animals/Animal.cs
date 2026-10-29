@@ -9,7 +9,7 @@ using Wolf_Island.Extensions;
 
 namespace Wolf_Island.Entities.Animals
 {
-    internal abstract class Animal
+    public abstract class Animal
     {
         public enum Sizes
         {

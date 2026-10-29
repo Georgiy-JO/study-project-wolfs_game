@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Wolf_Island
 {
-    internal interface IConfig
+    public interface IConfig
     {
 
     }

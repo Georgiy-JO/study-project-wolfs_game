@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Wolf_Island.Entities.Objects
 {
-    internal abstract class Food
+    public abstract class Food
     {
         public uint Value { get; }          // Can be made changeable - that would allow to make animal eat part of food and allow it to restore
         public (uint x, uint y) Coord { get; }
@@ -31,12 +31,12 @@ namespace Wolf_Island.Entities.Objects
         public virtual void Update(Game.Data data, List<(uint x, uint y)>? newData) { }
     }
 
-    internal abstract class Grassy : Food
+    public abstract class Grassy : Food
     {
         public Grassy(uint fValue, uint changeTimer, uint curChangeTimer, (uint x, uint y) coord) : base(fValue, changeTimer, curChangeTimer, coord) { }
         public Grassy(uint fValue, uint changeTimer, (uint x, uint y) coord) : base(fValue, changeTimer, coord) { }
     }
-    internal abstract class Meaty : Food
+    public abstract class Meaty : Food
     {
         public Meaty(uint fValue, uint changeTimer, uint curChangeTimer, (uint x, uint y) coord) : base(fValue, changeTimer, curChangeTimer, coord) { }
         public Meaty(uint fValue, uint changeTimer, (uint x, uint y) coord) : base(fValue, changeTimer, coord) { }

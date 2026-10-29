@@ -5,7 +5,7 @@ using Wolf_Island.Entities.Animals.Service;
 
 namespace Wolf_Island.Entities.Animals
 {
-    internal class Rabbit : Herbivore
+    public class Rabbit : Herbivore
     {
         /// <summary>
         /// Creats a rabbit.
@@ -15,7 +15,7 @@ namespace Wolf_Island.Entities.Animals
         { }
 
     }
-    internal class Wolf : Carnivore
+    public class Wolf : Carnivore
     {
         /// <summary>
         /// Creats a cool wolfs.
