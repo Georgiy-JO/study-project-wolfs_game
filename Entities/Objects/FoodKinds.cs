@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Wolf_Island.Extensions;
 
 namespace Wolf_Island.Entities.Objects.FoodKinds
 {

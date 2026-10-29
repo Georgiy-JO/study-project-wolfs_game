@@ -1,17 +1,22 @@
 using Microsoft.VisualBasic;
-using static Wolf_Island.Cell;
+using Wolf_Island.Entities.Animals;
+using Wolf_Island.Entities.Animals.Service;
 using Wolf_Island.Entities.Objects;
 using Wolf_Island.Entities.Objects.FoodKinds;
-using Wolf_Island.Entities.Animals;
+using Wolf_Island.Extensions;
+using static Wolf_Island.Cell;
+
+
 
 namespace Wolf_Island;
 
 internal class Game
 {
-    public enum Direction   // 8
+    public enum Direction
     {
         dNorth = 0, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest
     }
+
     public static (long x, long y) GetCoords(Direction direction, (uint x, uint y) curCoords)
     {
         long x = curCoords.x;
@@ -38,6 +43,7 @@ internal class Game
                 return (x, y);
         }
     }
+
     public struct Data
     {
         private readonly uint _fieldWidth;
@@ -60,9 +66,11 @@ internal class Game
     }
 
     protected Data _data;
+    private readonly IFactory<Animal, AnimalData> _factory;
 
-    public Game(uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5, uint countRabbit = 5, uint countGrass = 10)
+    public Game(IFactory<Animal, AnimalData> factory, uint fieldWidth = 20, uint fieldHeight = 20, uint countWolfs = 5, uint countRabbit = 5, uint countGrass = 10)
     {
+        _factory = factory;
         _data = new Data(fieldWidth, fieldHeight, new List<Animal>(), new List<Food>());
 
         InitEntities(countWolfs, countRabbit, countGrass);
@@ -81,10 +89,12 @@ internal class Game
         //}
 
         List<(uint x, uint y)> newGrass = new List<(uint x, uint y)>();
-        foreach (var grass in _data.Food.OfType<Grass>())       // the check of type is not really needed here, because Remains has update too
+
+        foreach (var grass in _data.Food)
         {
             grass.Update(_data, newGrass);
         }
+
         foreach (var ng in newGrass)
         {
             _data.Food.Add(new Grass(ng));
@@ -109,34 +119,25 @@ internal class Game
 
     public GameSnapshot GetSnapshot()
     {
-        var cells = new List<Cell>((int)(_data.Width * _data.Height));
-
-        for (uint y = 0; y < _data.Height; y++)
-            for (uint x = 0; x < _data.Width; x++)
-                cells.Add(new Cell(x, y, CellType.Empty));
-
-        foreach (var f in _data.Food)
-            cells[(int)(f.Coord.y * _data.Width + f.Coord.x)] = new Cell((uint)f.Coord.x, (uint)f.Coord.y, (f is Grass) ? CellType.Grass : CellType.Remains);
-
+        var animals = new List<Animal>(_data.Animals.Count);
         foreach (var a in _data.Animals)
             if (a.IsAlive)
-                cells[(int)(a.Coord.y * _data.Width + a.Coord.x)] = new Cell((uint)a.Coord.x, (uint)a.Coord.y, (a is Rabbit) ? CellType.Rabbit : CellType.Wolf);
+                animals.Add(a);
 
-        //foreach (var w in _data.Carnivores)
-        //    if (w.IsAlive)
-        //        cells[(int)(w.Coord.y * _data.Width + w.Coord.x)] = new Cell((uint)w.Coord.x, (uint)w.Coord.y, CellType.Wolf);
+        var food = new List<Food>(_data.Food.Count);
+        foreach (var f in _data.Food)
+            food.Add(f);
 
-        return new GameSnapshot(_data.Width, _data.Height, cells);
+        return new GameSnapshot(_data.Width, _data.Height, animals, food);
     }
 
-    public void InitEntities(uint countWolfs, uint countRabbit, uint countGrass)
+    protected void InitEntities(uint countWolfs, uint countRabbit, uint countGrass)
     {
-        List<(uint x, uint y)> allPositions = CreatePositions(_data.Width, _data.Height);
-        Stack<(uint x, uint y)> positions = new(allPositions?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
+        Stack<(uint x, uint y)> positions = new(CreatePositions(_data.Width, _data.Height)?.GetShuffledCollections(out var _) ?? Array.Empty<(uint x, uint y)>());
 
-        _data.Animals.AddRange(CreateAllWolfs(countWolfs, positions));
-        _data.Animals.AddRange(CreateAllRabbits(countRabbit, positions));
-        _data.Food.AddRange(CreateAllGrass(countGrass, positions));
+        _data.Animals.AddRange(SpawnEnimals<Wolf>(countWolfs, positions));
+        _data.Animals.AddRange(SpawnEnimals<Rabbit>(countRabbit, positions));
+        _data.Food.AddRange(SpawnGrass(countGrass, positions));
     }
 
     protected static List<(uint x, uint y)> CreatePositions(uint fieldWidth, uint fieldHeight)
@@ -150,37 +151,23 @@ internal class Game
         return positions;
     }
 
-    protected static List<Wolf> CreateAllWolfs(uint countWolfs, Stack<(uint x, uint y)> positions)
+    protected IEnumerable<Animal> SpawnEnimals<TAnimal>(uint count, Stack<(uint x, uint y)> positions) where TAnimal : Animal
     {
-        List<Wolf> res = new List<Wolf>();
-
-        for (int i = 0; i < countWolfs; i++)
+        for (uint i = 0; i < count; i++)
         {
             if (!positions.TryPop(out var pos))
-                throw new InvalidOperationException("The free cages for wolves are empty.!");
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("No more free cells!!!");
 
-            res.Add(new Wolf(pos));
+                yield break;
+            }
+
+            yield return _factory.Create<TAnimal>(pos) ?? throw new ArgumentNullException("Animal is null", nameof(TAnimal));
         }
-
-        return res;
     }
 
-    protected static List<Rabbit> CreateAllRabbits(uint countRabbit, Stack<(uint x, uint y)> positions)
-    {
-        List<Rabbit> res = new List<Rabbit>();
-
-        for (int i = 0; i < countRabbit; i++)
-        {
-            if (!positions.TryPop(out var pos))
-                throw new InvalidOperationException("The free cages for wolves are empty.!");
-
-            res.Add(new Rabbit(pos));
-        }
-
-        return res;
-    }
-
-    protected static List<Grass> CreateAllGrass(uint countGrass, Stack<(uint x, uint y)> positions)
+    protected static List<Grass> SpawnGrass(uint countGrass, Stack<(uint x, uint y)> positions)
     {
         List<Grass> res = new List<Grass>();
 

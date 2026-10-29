@@ -17,6 +17,10 @@ namespace Wolf_Island.Entities.Animals
     }
     internal class Wolf : Carnivore
     {
+        /// <summary>
+        /// Creats a cool wolfs.
+        /// </summary>
+        /// <param name="coordinates">Spawn location.</param>
         public Wolf((uint x, uint y) coordinates = default) : base(ConstantsLoader.Wolf(), coordinates)
         { }
     }
