@@ -11,7 +11,7 @@ namespace Wolf_Island.Entities.Animals
         /// Creats a rabbit.
         /// </summary>
         /// <param name="coordinates">Spawn location.</param>
-        public Rabbit((uint x, uint y) coordinates = default) : base(ConstantsLoader.Rabbit(),  coordinates)
+        public Rabbit(AnimalData data, (uint x, uint y) coordinates = default) : base(data,  coordinates)
         { }
 
     }
@@ -21,7 +21,7 @@ namespace Wolf_Island.Entities.Animals
         /// Creats a cool wolfs.
         /// </summary>
         /// <param name="coordinates">Spawn location.</param>
-        public Wolf((uint x, uint y) coordinates = default) : base(ConstantsLoader.Wolf(), coordinates)
+        public Wolf(AnimalData data, (uint x, uint y) coordinates = default) : base(data, coordinates)
         { }
     }
 }

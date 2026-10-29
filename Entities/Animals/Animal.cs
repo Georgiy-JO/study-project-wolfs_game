@@ -5,6 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using Wolf_Island.Entities.Objects;
 using Wolf_Island.Entities.Animals.Service;
+using Wolf_Island.Extensions;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -144,14 +145,14 @@ namespace Wolf_Island.Entities.Animals
         protected virtual void Feedhandler(Game.Data data)
         {
             var FoodThere = data.Food.Find(x => x.Coord == Coord);
-            if (this.Feed(FoodThere))
+            if (FoodThere!=null && Feed(FoodThere))
             {
                 data.Food.Remove(FoodThere);                    // Can avoid removing grass here if we add an ability to change grass's value 
                 return;
             }
 
             var AnimalFoodThere = data.Animals.Find(x => x.Coord == Coord);
-            if (this.Feed(AnimalFoodThere))
+            if (AnimalFoodThere != null && this.Feed(AnimalFoodThere))
             {
                 AnimalFoodThere.Kill();
                 AnimalFoodThere.MeatValue = 0;
