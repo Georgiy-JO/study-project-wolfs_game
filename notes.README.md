@@ -10,3 +10,8 @@
 8. Restructured the mane [game data](/Game.cs) so it can store both Grass and Remains
     8.1. following files were changed too
 9. Entities/Animals/Service.cs for field building for any animal
+
+
+
+1. объединить в 1 list всех животных       - done
+2. remains logic                           - done

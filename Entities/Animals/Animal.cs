@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection.Metadata;
 using System.Text;
-using Wolf_Island.Entities;
-using WolfGame;
+using Wolf_Island.Entities.Objects;
+using Wolf_Island.Entities.Animals.Service;
 
 namespace Wolf_Island.Entities.Animals
 {
@@ -19,8 +19,8 @@ namespace Wolf_Island.Entities.Animals
         protected uint MaxHealth { get; }
         protected uint MaxFullness { get; }
         //protected virtual uint MaxMoveDistance { get => 1;}       // not used
-        public uint MeatValue { get; }
         public uint FieldOfView { get; }
+        public uint MeatValue { private set; get; }
         private readonly uint MaxHungerTimer;
         private readonly uint MaxLifelossTimer;
         public Sizes Size { get; }
@@ -43,62 +43,45 @@ namespace Wolf_Island.Entities.Animals
         /// <summary>
         /// An Animal constructor.
         /// </summary>
-        /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
-        /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
-        /// <param name="meatValue">how much value will its remains Food:Remains has</param>
-        /// <param name="FieldOfView">how far on the field can it see</param>
-        /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
-        /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
-        /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
-        /// <param name="coordinates">spawn location</param>
-        public Animal(uint maxHealth = 1, uint maxFullness = 1,
-                      uint meatValue = 1, uint fieldOfView = 1, Sizes size = Sizes.szMedium,
-                      uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
-                       (uint x, uint y) coordinates = default)
+        /// <param name="dat">Set constants and other animal data.</param>
+        /// <param name="coordinates">Spawn location.</param>
+        public Animal(AnimalData dat, (uint x, uint y) coordinates = default)
         {
-            MaxHealth = maxHealth;
-            MaxFullness = maxFullness;
-            MeatValue = meatValue;
-            FieldOfView = fieldOfView;
-            MaxHungerTimer = maxHungerTimer;
-            MaxLifelossTimer = maxLifelossTimer;
+            MaxHealth = dat.MaxHealth;
+            MaxFullness = dat.MaxFullness;
+            MeatValue = dat.MeatValue;
+            FieldOfView = dat.FieldOfView;
+            MaxHungerTimer = dat.HungerTimer;
+            MaxLifelossTimer = dat.LifelossTimer;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = MaxHealth;
             _fullness = MaxFullness;
-            Size = size;
+            Size = dat.Size;
             _coordinates = coordinates;
         }
         /// <summary>
         /// An Animal constructor.
         /// </summary>
-        /// <param name="maxHealth">how much health it has (health == 0 - death)</param>
-        /// <param name="maxFullness">how hungry it can get until it starts loosing health</param>
-        /// <param name="meatValue">how much value will its remains Food:Remains has</param>
-        /// <param name="FieldOfView">how far on the field can it see</param>
-        /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
-        /// <param name="maxHungerTimer">how many moves it can make before becoming hungry</param>
-        /// <param name="maxLifelossTimer">how fast will it lose health if it's hungry</param>
-        /// <param name="health">how much health it has at the moment of the spawn</param>
-        /// <param name="fullness">how full it is at the moment of the spawn</param>
-        /// <param name="coordinates">spawn location</param>
-        public Animal(uint maxHealth = 1, uint maxFullness = 1,
-                      uint maxHungerTimer = 2, uint maxLifelossTimer = 2,
-                      uint meatValue = 1, uint fieldOfView = 1, Sizes size = Sizes.szMedium,
+        /// <param name="dat">Set constants and other animal data.</param>
+        /// <param name="health">How much health it has at the moment of the spawn.</param>
+        /// <param name="fullness">How full it is at the moment of the spawn.</param>
+        /// <param name="coordinates">Spawn location.</param>
+        public Animal(AnimalData dat,
                       uint health = 1, uint fullness = 1,
                        (uint x, uint y) coordinates = default)
         {
-            MaxHealth = maxHealth;
-            MaxFullness = maxFullness;
-            MeatValue = meatValue;
-            FieldOfView = fieldOfView;
-            MaxHungerTimer = maxHungerTimer;
-            MaxLifelossTimer = maxLifelossTimer;
+            MaxHealth = dat.MaxHealth;
+            MaxFullness = dat.MaxFullness;
+            MeatValue = dat.MeatValue;
+            FieldOfView = dat.FieldOfView;
+            MaxHungerTimer = dat.HungerTimer;
+            MaxLifelossTimer = dat.LifelossTimer;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = health;
             _fullness = fullness;
-            Size = size;
+            Size = dat.Size;
             _coordinates = coordinates;
         }
 
@@ -113,6 +96,8 @@ namespace Wolf_Island.Entities.Animals
         {
             if (_hungerTimer == 0)
                 _hungerTimer = MaxHungerTimer;
+            else
+                _hungerTimer--;
             if (_fullness == MaxFullness && _health < MaxHealth)
                 _health = Math.Min(MaxHealth, _health + 1);
             if (_fullness == 0)
@@ -129,15 +114,56 @@ namespace Wolf_Island.Entities.Animals
             if (_fullness > 0 && _hungerTimer == 0)
                 _fullness--;
 
-            _hungerTimer--;
-
             return IsAlive;
         }
 
 
         public abstract bool Feed(Food food);
-        public abstract void Update(Game.Data data);
-        protected abstract void Movehandler(Game.Data data);
-        protected abstract void Feedhandler(Game.Data data);
+        public abstract bool Feed(Animal food);
+        public abstract bool CanEat(Food food);
+        public abstract bool CanEat(Animal food);
+        public virtual void Update(Game.Data data)
+        {
+            Movehandler(data);              // handle moving
+            Feedhandler(data);              // handle feeding
+            Status();                       // hanger and life handle
+        }
+        protected virtual void Movehandler(Game.Data data)
+        {
+            var weightField = WeightField.CreateWeightField(data, this);
+            var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
+            ((long x, long y), int weight) theMove = (Coord, -(int)WeightField.weightDelta);       // issue#Movehandler_0: if the field size comes close to max int and FieldOfView comes close to global we are fucked
+
+            foreach (var possibleMove in possibleMoves)
+            {
+                if (theMove.weight < weightField[possibleMove])       // (possibleMove.x >= 0 && possibleMove.y >= 0 && possibleMove.x < data.Width && possibleMove.y < data.Height)
+                    theMove = (possibleMove, (int)weightField[possibleMove]);                   // issue#Movehandler_0
+            }
+            SetCoord((uint)theMove.Item1.x, (uint)theMove.Item1.y);
+        }
+        protected virtual void Feedhandler(Game.Data data)
+        {
+            var FoodThere = data.Food.Find(x => x.Coord == Coord);
+            if (this.Feed(FoodThere))
+            {
+                data.Food.Remove(FoodThere);                    // Can avoid removing grass here if we add an ability to change grass's value 
+                return;
+            }
+
+            var AnimalFoodThere = data.Animals.Find(x => x.Coord == Coord);
+            if (this.Feed(AnimalFoodThere))
+            {
+                AnimalFoodThere.Kill();
+                AnimalFoodThere.MeatValue = 0;
+                return;
+            }
+
+            //var AnimalCarnivoreFoodThere = data.Carnivores.Find(x => x.Coord == Coord);
+            //if (this.Feed(AnimalCarnivoreFoodThere))
+            //{
+            //    AnimalCarnivoreFoodThere.Kill();
+            //    return;
+            //}
+        }
     }
 }

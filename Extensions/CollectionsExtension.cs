@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using static WolfGame.Game;
 
-namespace Wolf_Island;
+namespace Wolf_Island.Extensions;
 
 internal static class CollectionsExtension
 {
@@ -12,7 +11,6 @@ internal static class CollectionsExtension
 
     public static IEnumerable<T> GetShuffledCollections<T>(this IEnumerable<T> collection, out IEnumerable<T> outPut)
     {
-
         if (collection == null)
             throw new ArgumentNullException("The collection must not be NULL");
 
@@ -38,5 +36,4 @@ internal static class CollectionsExtension
 
         return arrTemp;
     }
-
 }
