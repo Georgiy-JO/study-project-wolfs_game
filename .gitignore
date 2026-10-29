@@ -3,7 +3,7 @@
 [Bb]in/
 [Oo]bj/
 .vscode/
-
+[Pp]roperties]
 
 # Prerequisites
 *.d
