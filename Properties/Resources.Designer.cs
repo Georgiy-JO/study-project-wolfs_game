@@ -72,7 +72,8 @@ namespace Wolf_Island.Properties {
         ///      &quot;FieldOfView&quot;: 3,
         ///      &quot;Size&quot;: &quot;szMedium&quot;,
         ///      &quot;HungerTimer&quot;: 2,
-        ///      &quot;LifelossTimer&quot;: 1
+        ///      &quot;LifelossTimer&quot;: 1,
+        ///      &quot;MoveDistance&quot;: 2
         ///    },
         ///    {
         ///      &quot;Id&quot;: &quot;Rabbit&quot;,
@@ -83,10 +84,8 @@ namespace Wolf_Island.Properties {
         ///      &quot;FieldOfView&quot;: 2,
         ///      &quot;Size&quot;: &quot;szSmall&quot;,
         ///      &quot;HungerTimer&quot;: 1,
-        ///      &quot;LifelossTimer&quot;: 1
-        ///    }
-        ///  ]
-        ///}.
+        ///      &quot;LifelossTimer&quot;: 1,
+        ///      &quot;MoveDistance&quot;: 1
         /// </summary>
         internal static string Animals {
             get {

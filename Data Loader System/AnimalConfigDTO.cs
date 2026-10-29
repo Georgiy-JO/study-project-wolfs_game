@@ -21,6 +21,7 @@ namespace Wolf_Island.Data
         public string Size { get; set; } = "Medium";
         public uint HungerTimer { get; set; }
         public uint LifelossTimer { get; set; }
+        public uint MoveDistance { get; set; }
     }
 
     internal sealed class AnimalsListDTO

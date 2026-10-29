@@ -26,7 +26,7 @@ namespace Wolf_Island
                 if (!Enum.TryParse<Animal.Sizes>(dto.Size, ignoreCase: true, out var size))
                     throw new InvalidDataException($"Unknown size '{dto.Size}' for animal '{dto.Id}'");
 
-                return new AnimalData(dto.MaxHealth, dto.MaxFullness, dto.MeatValue, dto.FieldOfView, size, dto.HungerTimer, dto.LifelossTimer);
+                return new AnimalData(dto.MaxHealth, dto.MaxFullness, dto.MeatValue, dto.FieldOfView, size, dto.HungerTimer, dto.LifelossTimer, dto.MoveDistance);
             });
 
             IFactory<Animal, AnimalData> factory = new ObjectsFactory<Animal, AnimalData>(registry);

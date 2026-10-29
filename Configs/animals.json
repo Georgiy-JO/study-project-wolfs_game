@@ -9,7 +9,8 @@
       "FieldOfView": 3,
       "Size": "szMedium",
       "HungerTimer": 2,
-      "LifelossTimer": 1
+      "LifelossTimer": 1,
+      "MoveDistance": 2
     },
     {
       "Id": "Rabbit",
@@ -20,7 +21,8 @@
       "FieldOfView": 2,
       "Size": "szSmall",
       "HungerTimer": 1,
-      "LifelossTimer": 1
+      "LifelossTimer": 1,
+      "MoveDistance": 1
     }
   ]
 }

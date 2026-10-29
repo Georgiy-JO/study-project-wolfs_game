@@ -21,7 +21,7 @@ namespace Wolf_Island.Entities.Animals
         /// <param name="size">size of the animal (important for the life chain - who eats who)</param>
         /// <param name="hungerTimer">how many moves it can make before becoming hungry</param>
         /// <param name="lifelossTimer">how fast will it lose health if it's hungry</param>
-        record struct AnimalData(uint MaxHealth = 1, uint MaxFullness = 1, uint MeatValue = 1, uint FieldOfView = 1, Sizes Size = Sizes.szMedium, uint HungerTimer = 2, uint LifelossTimer = 2): IConfig;
+        record struct AnimalData(uint MaxHealth = 1, uint MaxFullness = 1, uint MeatValue = 1, uint FieldOfView = 1, Sizes Size = Sizes.szMedium, uint HungerTimer = 2, uint LifelossTimer = 2, uint MoveDistance=1): IConfig;
 
         internal static class WeightField
         {
@@ -108,21 +108,6 @@ namespace Wolf_Island.Entities.Animals
 
                 return weightField;
             }
-        }
-
-        internal static class ConstantsLoader
-        {
-            static public AnimalData Rabbit()
-            {
-                return new AnimalData(MaxHealth: 4, MaxFullness: 3, MeatValue: 2, FieldOfView: 2, Size: Sizes.szSmall, HungerTimer: 1, LifelossTimer: 1);
-
-            }
-            static public AnimalData Wolf()
-            {
-                return new AnimalData(MaxHealth: 6, MaxFullness: 6, MeatValue: 5, FieldOfView: 3, Size: Sizes.szMedium, HungerTimer: 2, LifelossTimer: 1);
-
-            }
-            
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Wolf_Island.Entities.Animals
 
         protected uint MaxHealth { get; }
         protected uint MaxFullness { get; }
-        //protected virtual uint MaxMoveDistance { get => 1;}       // not used
+        protected virtual uint MoveDistance { get; }       // not used
         public uint FieldOfView { get; }
         public uint MeatValue { private set; get; }
         private readonly uint MaxHungerTimer;
@@ -54,6 +54,7 @@ namespace Wolf_Island.Entities.Animals
             FieldOfView = dat.FieldOfView;
             MaxHungerTimer = dat.HungerTimer;
             MaxLifelossTimer = dat.LifelossTimer;
+            MoveDistance = dat.MoveDistance;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = MaxHealth;
@@ -78,6 +79,7 @@ namespace Wolf_Island.Entities.Animals
             FieldOfView = dat.FieldOfView;
             MaxHungerTimer = dat.HungerTimer;
             MaxLifelossTimer = dat.LifelossTimer;
+            MoveDistance = dat.MoveDistance;
             _hungerTimer = MaxHungerTimer;
             _lifelossTimer = MaxLifelossTimer;
             _health = health;
@@ -126,29 +128,35 @@ namespace Wolf_Island.Entities.Animals
         public virtual void Update(Game.Data data)
         {
             Movehandler(data);              // handle moving
-            Feedhandler(data);              // handle feeding
+            //Feedhandler(data);              // handle feeding
             Status();                       // hanger and life handle
         }
         protected virtual void Movehandler(Game.Data data)
         {
             var weightField = WeightField.CreateWeightField(data, this);
-            var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
-            ((long x, long y), int weight) theMove = (Coord, -(int)WeightField.weightDelta);       // issue#Movehandler_0: if the field size comes close to max int and FieldOfView comes close to global we are fucked
-
-            foreach (var possibleMove in possibleMoves)
+            
+            for (int i = 0; i < MoveDistance; i++)
             {
-                if (theMove.weight < weightField[possibleMove])       // (possibleMove.x >= 0 && possibleMove.y >= 0 && possibleMove.x < data.Width && possibleMove.y < data.Height)
-                    theMove = (possibleMove, (int)weightField[possibleMove]);                   // issue#Movehandler_0
+                ((long x, long y), int weight) theMove = (Coord, -(int)WeightField.weightDelta);       // issue#Movehandler_0: if the field size comes close to max int and FieldOfView comes close to global we are fucked
+                var possibleMoves = Enum.GetValues<Game.Direction>().Select(dir => Game.GetCoords(dir, Coord)).ToArray().GetShuffledCollections();
+                foreach (var possibleMove in possibleMoves)
+                {
+                    if (theMove.weight < weightField[possibleMove] &&(possibleMove.x>0 && possibleMove.x<data.Width && possibleMove.y>0&& possibleMove.y<data.Height))       // (possibleMove.x >= 0 && possibleMove.y >= 0 && possibleMove.x < data.Width && possibleMove.y < data.Height)
+                        theMove = (possibleMove, (int)weightField[possibleMove]);                   // issue#Movehandler_0
+                }
+                SetCoord((uint)theMove.Item1.x, (uint)theMove.Item1.y);
+
+                if (Feedhandler(data)) 
+                    break;
             }
-            SetCoord((uint)theMove.Item1.x, (uint)theMove.Item1.y);
         }
-        protected virtual void Feedhandler(Game.Data data)
+        protected virtual bool Feedhandler(Game.Data data)
         {
             var FoodThere = data.Food.Find(x => x.Coord == Coord);
             if (FoodThere!=null && Feed(FoodThere))
             {
                 data.Food.Remove(FoodThere);                    // Can avoid removing grass here if we add an ability to change grass's value 
-                return;
+                return true;
             }
 
             var AnimalFoodThere = data.Animals.Find(x => x.Coord == Coord);
@@ -156,8 +164,9 @@ namespace Wolf_Island.Entities.Animals
             {
                 AnimalFoodThere.Kill();
                 AnimalFoodThere.MeatValue = 0;
-                return;
+                return true;
             }
+            return false;
 
             //var AnimalCarnivoreFoodThere = data.Carnivores.Find(x => x.Coord == Coord);
             //if (this.Feed(AnimalCarnivoreFoodThere))
