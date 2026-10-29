@@ -96,6 +96,8 @@ namespace Wolf_Island.Entities.Animals
         {
             if (_hungerTimer == 0)
                 _hungerTimer = MaxHungerTimer;
+            else
+                _hungerTimer--;
             if (_fullness == MaxFullness && _health < MaxHealth)
                 _health = Math.Min(MaxHealth, _health + 1);
             if (_fullness == 0)
@@ -111,8 +113,6 @@ namespace Wolf_Island.Entities.Animals
 
             if (_fullness > 0 && _hungerTimer == 0)
                 _fullness--;
-
-            _hungerTimer--;
 
             return IsAlive;
         }

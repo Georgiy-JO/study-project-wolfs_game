@@ -6,12 +6,20 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
 {
     internal class Grass : Grassy
     {
-        public Grass() : base(2, (0, 0)) { }
-        public Grass((uint x, uint y) coords) : base(2, (coords.x, coords.y)) { }
+        public Grass() : base(fValue:2, changeTimer: 4, (0, 0)) { }
+        public Grass((uint x, uint y) coords) : base(2, changeTimer: 4, (coords.x, coords.y)) { }
+        public Grass(uint curChangeTimer, (uint x, uint y) coords) : base(2, changeTimer: 4, curChangeTimer: curChangeTimer, (coords.x, coords.y)) { }
         public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
         {
             if (newData == null) return;
 
+            if (_changeTimer != 0)
+            {
+                _changeTimer--;
+                return;
+            }
+            
+            _changeTimer = MaxChangeTimer;
             Game.Direction[] possiblePlacing = { Game.Direction.dNorth, Game.Direction.dSouth, Game.Direction.dEast, Game.Direction.dWest };
             possiblePlacing = possiblePlacing.GetShuffledCollections();
 
@@ -36,12 +44,14 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
                 }
                 if (placed == 0) break;
             }
+            
         }
     }
 
     internal class Remains : Meaty
     {
-        public Remains(uint fValue = 0) : base(fValue, (0, 0)) { }
-        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue, (coords.x, coords.y)) { }
+        public Remains(uint fValue = 0) : base(fValue, changeTimer: 5, (0, 0)) { }
+        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue, changeTimer: 5, (coords.x, coords.y)) { }
+        public Remains((uint x, uint y) coords, uint curChangeTimer, uint fValue = 0) : base(fValue, changeTimer: 5, curChangeTimer: curChangeTimer, (coords.x, coords.y)) { }
     }
 }
