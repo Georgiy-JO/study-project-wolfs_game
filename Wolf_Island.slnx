@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="Wolf_Island.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/Wolf_Island.Core/Wolf_Island.Core.csproj" />
+    <Project Path="src/Wolf_Island.App/Wolf_Island.App.csproj" />
+  </Folder>
 </Solution>

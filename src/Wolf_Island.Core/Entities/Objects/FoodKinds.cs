@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Wolf_Island.Extensions;
+﻿using Wolf_Island.Core.Entities.Service;
+using Wolf_Island.Core.Extensions;
 
-namespace Wolf_Island.Entities.Objects.FoodKinds
+namespace Wolf_Island.Core.Entities.Objects.FoodKinds
 {
     internal class Grass : Grassy
     {
-        public Grass() : base(fValue:2, changeTimer: 4, (0, 0)) { }
-        public Grass((uint x, uint y) coords) : base(2, changeTimer: 4, (coords.x, coords.y)) { }
-        public Grass(uint curChangeTimer, (uint x, uint y) coords) : base(2, changeTimer: 4, curChangeTimer: curChangeTimer, (coords.x, coords.y)) { }
+        public Grass(FoodData data, (uint x, uint y) coord = default) : base(data, coord) { }
+        public Grass(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer,coord) { }
+        public Grass(FoodDataShort data, (uint x, uint y) coord = default) : base(data, coord) { }
         public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
         {
             if (newData == null) return;
@@ -19,8 +17,8 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
                 _changeTimer--;
                 return;
             }
-            
             _changeTimer = MaxChangeTimer;
+
             Game.Direction[] possiblePlacing = { Game.Direction.dNorth, Game.Direction.dSouth, Game.Direction.dEast, Game.Direction.dWest };
             possiblePlacing = possiblePlacing.GetShuffledCollections();
 
@@ -33,8 +31,6 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
                 if (coords.y < 0 || coords.x < 0 || coords.y >= data.Height || coords.x >= data.Width) flag = false;
                 for (int i = 0; flag && i < data.Animals.Count; i++)
                     if (coords == data.Animals[i].Coord) flag = false;
-                //for (int i = 0; flag && i < data.Carnivores.Count; i++)
-                //    if (coords == data.Carnivores[i].Coord) flag = false;
                 for (int i = 0; flag && i < data.Food.Count; i++)
                     if (coords == data.Food[i].Coord) flag = false;
 
@@ -45,14 +41,24 @@ namespace Wolf_Island.Entities.Objects.FoodKinds
                 }
                 if (placed == 0) break;
             }
-            
         }
     }
 
     internal class Remains : Meaty
     {
-        public Remains(uint fValue = 0) : base(fValue, changeTimer: 5, (0, 0)) { }
-        public Remains((uint x, uint y) coords, uint fValue = 0) : base(fValue, changeTimer: 5, (coords.x, coords.y)) { }
-        public Remains((uint x, uint y) coords, uint curChangeTimer, uint fValue = 0) : base(fValue, changeTimer: 5, curChangeTimer: curChangeTimer, (coords.x, coords.y)) { }
+        public Remains(FoodData data, (uint x, uint y) coord = default) : base(data, coord) { }
+        public Remains(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer, coord) { }
+        public Remains(FoodDataShort data, (uint x, uint y) coord = default) : base(data, coord) { }
+        public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
+        {
+            if (_changeTimer != 0)
+            {
+                _changeTimer--;
+                return;
+            }
+            _changeTimer = MaxChangeTimer;
+
+            // Add here the dissapearing logic (Game.cs, Food.cs and Animals.cs should be adjusted as well)
+        }
     }
 }

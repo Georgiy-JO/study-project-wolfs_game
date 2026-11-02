@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Wolf_Island.Core</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Embed the JSON so Core is self-contained -->
+  <ItemGroup>
+    <EmbeddedResource Include="DataLoader\Configs\animals.json" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Wolf_Island.Entities.Animals.Service;
-using Wolf_Island.Entities.Objects;
+using Wolf_Island.Core.Entities.Service;
+using Wolf_Island.Core.Entities.Objects;
 
-namespace Wolf_Island.Entities.Animals
+namespace Wolf_Island.Core.Entities.Animals
 {
     internal abstract class Herbivore : Animal
     {

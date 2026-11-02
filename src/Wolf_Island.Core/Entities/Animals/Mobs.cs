@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Wolf_Island.Entities.Animals.Service;
+﻿using Wolf_Island.Core.Entities.Service;
 
-namespace Wolf_Island.Entities.Animals
+namespace Wolf_Island.Core.Entities.Animals
 {
     internal class Rabbit : Herbivore
     {

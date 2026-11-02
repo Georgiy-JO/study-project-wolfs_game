@@ -1,9 +1,12 @@
-# Visual Studio bullshittery
+# Main
 .vs/
 [Bb]in/
 [Oo]bj/
 .vscode/
-[Pp]roperties
+[Pp]roperties           
+# ??
+*.user
+*.suo
 
 # Prerequisites
 *.d
@@ -44,7 +47,6 @@
  
 # Executables
 *.exe
-*.app
 *.i*86
 *.x86_64
 *.hex
