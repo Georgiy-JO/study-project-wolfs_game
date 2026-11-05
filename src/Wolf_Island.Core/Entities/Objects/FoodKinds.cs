@@ -6,8 +6,8 @@ namespace Wolf_Island.Core.Entities.Objects.FoodKinds
     internal class Grass : Grassy
     {
         public Grass(FoodData data, (uint x, uint y) coord = default) : base(data, coord) { }
-        public Grass(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer,coord) { }
-        public Grass(FoodDataShort data, (uint x, uint y) coord = default) : base(data, coord) { }
+        //public Grass(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer,coord) { }
+        //public Grass(FoodDataShort data, (uint x, uint y) coord = default) : base(data, coord) { }
         public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
         {
             if (newData == null) return;
@@ -47,8 +47,8 @@ namespace Wolf_Island.Core.Entities.Objects.FoodKinds
     internal class Remains : Meaty
     {
         public Remains(FoodData data, (uint x, uint y) coord = default) : base(data, coord) { }
-        public Remains(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer, coord) { }
-        public Remains(FoodDataShort data, (uint x, uint y) coord = default) : base(data, coord) { }
+        //public Remains(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer, coord) { }
+        //public Remains(FoodDataShort data, (uint x, uint y) coord = default) : base(data, coord) { }
         public override void Update(Game.Data data, List<(uint x, uint y)>? newData)
         {
             if (_changeTimer != 0)

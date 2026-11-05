@@ -1,0 +1,16 @@
+{
+  "Food": [
+    {
+      "Id": "Grass",
+      "Value": 2,
+      "ChangeTimer": 4,
+      "CurChangeTimer": 4
+    },
+    {
+      "Id": "Remains",
+      "Value": 2,
+      "ChangeTimer": 5,
+      "CurChangeTimer": 5
+    }
+  ]
+}

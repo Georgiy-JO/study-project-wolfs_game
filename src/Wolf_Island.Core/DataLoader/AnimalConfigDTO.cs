@@ -5,12 +5,14 @@ using System.Text.Json.Serialization;
 
 namespace Wolf_Island.Data
 {
-    internal interface IDto
+    /*
+    internal interface ID
     {
         public string Id { get; set; }
     }
 
-    internal sealed class AnimalConfigDTO : IDto
+    
+    internal sealed class AnimalConfigDTO : ID
     {
         public string Id { get; set; } = "";
         public string Type { get; set; } = "";
@@ -24,8 +26,9 @@ namespace Wolf_Island.Data
         public uint MoveDistance { get; set; }
     }
 
-    internal sealed class AnimalsListDTO
+    private sealed class AnimalsListDTO
     {
         public List<AnimalConfigDTO> Animals { get; set; } = new();
     }
+    */
 }

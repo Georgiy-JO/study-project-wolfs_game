@@ -2,7 +2,6 @@
   "Animals": [
     {
       "Id": "Wolf",
-      "Type": "Wolf",
       "MaxHealth": 6,
       "MaxFullness": 6,
       "MeatValue": 5,
@@ -14,7 +13,6 @@
     },
     {
       "Id": "Rabbit",
-      "Type": "Rabbit",
       "MaxHealth": 4,
       "MaxFullness": 3,
       "MeatValue": 2,
