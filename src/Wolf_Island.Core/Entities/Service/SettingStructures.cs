@@ -12,7 +12,7 @@ namespace Wolf_Island.Core.Entities.Service
     /// <summary>
     /// An Animal settings structure.
     /// </summary>
-    /// <param name="id">The Id (used to determin the class).</param>
+    /// <param name="id">The Id (used to determine the class).</param>
     /// <param name="maxHealth">how much health it has (health == 0 - death).</param>
     /// <param name="maxFullness">how hungry it can get until it starts loosing health.</param>
     /// <param name="meatValue">how much value will its remains Food:Remains has.</param>
