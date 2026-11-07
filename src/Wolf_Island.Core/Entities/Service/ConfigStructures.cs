@@ -34,7 +34,10 @@ namespace Wolf_Island.Core.Entities.Service
         public uint HungerTimer { get; set; } = hungerTimer;
         public uint LifelossTimer { get; set; } = lifelossTimer;
         public uint MoveDistance { get; set; } = moveDistance;
-
+    }
+    internal sealed class AnimalsList
+    {
+        public List<AnimalData> Animals { get; set; } = new();
     }
     /// <summary>
     /// A food settings structure.
@@ -49,5 +52,9 @@ namespace Wolf_Island.Core.Entities.Service
         public uint Value { get; set; } = value;
         public uint ChangeTimer { get; set; } = changeTimer;
         public uint CurChangeTimer { get; set; } = curChangeTimer;
+    }
+    internal sealed class FoodList
+    {
+        public List<FoodData> Food { get; set; } = new();
     }
 }

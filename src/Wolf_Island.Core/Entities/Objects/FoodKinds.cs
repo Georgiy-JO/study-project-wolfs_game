@@ -3,7 +3,7 @@ using Wolf_Island.Core.Extensions;
 
 namespace Wolf_Island.Core.Entities.Objects.FoodKinds
 {
-    internal class Grass : Grassy
+    internal sealed class Grass : Grassy
     {
         public Grass(FoodData data, (uint x, uint y) coord = default) : base(data, coord) { }
         //public Grass(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer,coord) { }
@@ -44,7 +44,7 @@ namespace Wolf_Island.Core.Entities.Objects.FoodKinds
         }
     }
 
-    internal class Remains : Meaty
+    internal sealed class Remains : Meaty
     {
         public Remains(FoodData data, (uint x, uint y) coord = default) : base(data, coord) { }
         //public Remains(FoodDataShort data, uint curChangeTimer = default, (uint x, uint y) coord = default) : base(data, curChangeTimer, coord) { }

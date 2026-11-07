@@ -2,7 +2,7 @@
 
 namespace Wolf_Island.Core.Entities.Animals
 {
-    internal class Rabbit : Herbivore
+    internal sealed class Rabbit : Herbivore
     {
         /// <summary>
         /// Creats a rabbit.
@@ -12,7 +12,7 @@ namespace Wolf_Island.Core.Entities.Animals
         { }
 
     }
-    internal class Wolf : Carnivore
+    internal sealed class Wolf : Carnivore
     {
         /// <summary>
         /// Creats a cool wolfs.

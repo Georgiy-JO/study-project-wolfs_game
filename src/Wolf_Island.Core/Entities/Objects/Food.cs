@@ -2,10 +2,9 @@ using Wolf_Island.Core.Entities.Service;
 
 namespace Wolf_Island.Core.Entities.Objects
 {
-    internal abstract class Food
+    internal abstract class Food: Entity
     {
         public uint Value { get; }          // Can be made changeable - that would allow to make animal eat part of food and allow it to restore
-        public (uint x, uint y) Coord { get; }
 
         protected readonly uint MaxChangeTimer;
         protected uint _changeTimer;

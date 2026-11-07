@@ -5,7 +5,7 @@ using Wolf_Island.Core.Extensions;
 
 namespace Wolf_Island.Core.Entities.Animals;
 
-internal abstract class Animal
+internal abstract class Animal: Entity
 {
     public enum Sizes
     {
@@ -23,7 +23,7 @@ internal abstract class Animal
 
     protected uint _health;
     protected uint _fullness;
-    private (uint x, uint y) _coordinates;
+    //private (uint x, uint y) _coordinates;
     private uint _hungerTimer;
     private uint _lifelossTimer;
 
@@ -32,7 +32,7 @@ internal abstract class Animal
     public uint Fullness => _fullness;
     public bool IsFull => _fullness == MaxFullness;
     public bool IsHealthy => _health == MaxHealth;
-    public (uint x, uint y) Coord => _coordinates;
+    //public (uint x, uint y) Coord => _coordinates;
 
     /// <summary>
     /// An Animal constructor.
@@ -53,7 +53,7 @@ internal abstract class Animal
         _health = MaxHealth;
         _fullness = MaxFullness;
         Size = dat.Size;
-        _coordinates = coordinates;
+        Coord = coordinates;
     }
     /// <summary>
     /// An Animal constructor.
@@ -78,11 +78,11 @@ internal abstract class Animal
         _health = health;
         _fullness = fullness;
         Size = dat.Size;
-        _coordinates = coordinates;
+        Coord = coordinates;
     }
 
-    public void SetCoord(uint x, uint y) => _coordinates = (x, y);
-    public void SetCoord((uint x, uint y) newCoords) => _coordinates = newCoords;
+    public void SetCoord(uint x, uint y) => Coord = (x, y);
+    public void SetCoord((uint x, uint y) newCoords) => Coord = newCoords;
     /// <summary>
     /// Handles _fullness and _health.
     /// Uses _lifelossTimer and _hungerTimer for that.
