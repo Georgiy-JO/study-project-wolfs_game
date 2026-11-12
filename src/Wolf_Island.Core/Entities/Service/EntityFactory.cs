@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Wolf_Island.Core.Entities.Animals;
+﻿using Wolf_Island.Core.Entities.Animals;
 using Wolf_Island.Core.Entities.Objects;
-using static Wolf_Island.Game;
 
 namespace Wolf_Island.Core.Entities.Service
 {

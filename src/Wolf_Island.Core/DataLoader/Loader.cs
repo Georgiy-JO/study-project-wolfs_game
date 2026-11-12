@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Wolf_Island.Core.Entities.Service;
 
-namespace Wolf_Island.Core.DataLoader
-{
+namespace Wolf_Island.Core.DataLoader;
+
     internal class Loader
     {
 
@@ -87,4 +84,4 @@ namespace Wolf_Island.Core.DataLoader
             return registry;
         }
     }
-}
+

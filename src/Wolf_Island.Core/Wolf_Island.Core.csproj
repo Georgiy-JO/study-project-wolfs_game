@@ -7,10 +7,11 @@
     <RootNamespace>Wolf_Island.Core</RootNamespace>
   </PropertyGroup>
 
-  <!-- Embed the JSON so Core is self-contained -->
   <ItemGroup>
-    <EmbeddedResource Include="DataLoader\Configs\food.json" />
-    <EmbeddedResource Include="DataLoader\Configs\animals.json" />
+    <Content Include="DataLoader\Configs\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>Configs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

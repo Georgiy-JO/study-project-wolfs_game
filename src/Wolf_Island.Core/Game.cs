@@ -1,6 +1,3 @@
-using Microsoft.VisualBasic;
-using Microsoft.Win32;
-using System.Reflection;
 using Wolf_Island.Core.DataLoader;
 using Wolf_Island.Core.Entities;
 using Wolf_Island.Core.Entities.Animals;
@@ -8,19 +5,17 @@ using Wolf_Island.Core.Entities.Objects;
 using Wolf_Island.Core.Entities.Service;
 using Wolf_Island.Core.Extensions;
 using Wolf_Island.Core.GameSnapshots;
-using static Wolf_Island.Game;
 
 
+namespace Wolf_Island.Core;
 
-namespace Wolf_Island;
-
-internal class Game
+public class Game
 {
     public enum Direction
     {
         dNorth = 0, dSouth, dEast, dWest, dNorthEast, dNorthWest, dSouthEast, dSouthWest
     }
-    public struct Data
+    internal struct Data
     {
         private readonly uint _fieldWidth;
         private readonly uint _fieldHeight;
@@ -41,7 +36,7 @@ internal class Game
         }
     }
 
-    protected Data _data;
+    private Data _data;
     private readonly EntityFactory _factory;
 
 
@@ -49,8 +44,10 @@ internal class Game
     {
         _data = new Data(fieldWidth, fieldHeight, new List<Animal>(), new List<Food>());
 
-        var animalJson = settingJsonlocation + "animals.json";
-        var foodJson = settingJsonlocation + "food.json";
+        //var animalJson = settingJsonlocation + "animals.json";
+        //var foodJson = settingJsonlocation + "food.json";
+        string animalJson = Path.Combine(settingJsonlocation, "animals.json");
+        string foodJson = Path.Combine(settingJsonlocation, "food.json");
         if (!File.Exists(animalJson))
             throw new FileNotFoundException($"File not found: {animalJson}");
         if (!File.Exists(foodJson))
@@ -65,19 +62,19 @@ internal class Game
             registry[id] = 0;
         return registry;
     }
-    public void StartGame(Dictionary<string, uint> idAmoutRegistry)
+    public void Start(Dictionary<string, uint> idAmoutRegistry)
     {
         InitEntities(idAmoutRegistry);
     }
-    public void StopGame()
+    public void Stop()
     {
         _data.Animals.Clear();
         _data.Food.Clear();
     }
     public void RestartGame(Dictionary<string, uint> idAmoutRegistry)
     {
-        StopGame();
-        StartGame(idAmoutRegistry);
+        Stop();
+        Start(idAmoutRegistry);
     }
 
     public ObjectStyleGameSnapshot GetObjectStyleGameSnapshot()
@@ -113,27 +110,18 @@ internal class Game
     {
         long x = curCoords.x;
         long y = curCoords.y;
-        switch (direction)
+        return direction switch
         {
-            case Direction.dNorth:
-                return (x, y - 1);
-            case Direction.dSouth:
-                return (x, y + 1);
-            case Direction.dEast:
-                return (x + 1, y);
-            case Direction.dWest:
-                return (x - 1, y);
-            case Direction.dNorthEast:
-                return (x + 1, y - 1);
-            case Direction.dNorthWest:
-                return (x - 1, y - 1);
-            case Direction.dSouthEast:
-                return (x + 1, y + 1);
-            case Direction.dSouthWest:
-                return (x - 1, y + 1);
-            default:
-                return (x, y);
-        }
+            Direction.dNorth => (x, y - 1),
+            Direction.dSouth => (x, y + 1),
+            Direction.dEast => (x + 1, y),
+            Direction.dWest => (x - 1, y),
+            Direction.dNorthEast => (x + 1, y - 1),
+            Direction.dNorthWest => (x - 1, y - 1),
+            Direction.dSouthEast => (x + 1, y + 1),
+            Direction.dSouthWest => (x - 1, y + 1),
+            _ => (x, y),
+        };
     }
     public void Tick()
     {

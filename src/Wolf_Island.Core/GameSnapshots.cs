@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Wolf_Island.Core.Entities;
-using static Wolf_Island.Game;
 
 namespace Wolf_Island.Core.GameSnapshots;
 
